@@ -4,11 +4,11 @@ import {
   ThemeProvider,
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { Link, Stack } from "expo-router";
+import { Link, Stack, router } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
-import { Linking, Text, View } from "react-native";
+import { Button, Linking, Text, TouchableOpacity, View } from "react-native";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import React from "react";
 
@@ -33,13 +33,16 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <View className="flex-1 items-center justify-center bg-gray-100">
+      <View className="flex-1 items-center justify-center bg-gray-100">
         <Text>ELLP</Text>
+        <TouchableOpacity
+          className="bg-blue-500 p-2 rounded-lg"
+          onPress={() => router.push("/(auth)/sign-in")} 
+        >
+          <Text className="text-white text-lg">Go to Sign In</Text>
+        </TouchableOpacity>
         <Link href="/events">Go to events</Link>
-        </View>
+      </View>
     </ThemeProvider>
   );
 }
-
-
-

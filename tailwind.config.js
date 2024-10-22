@@ -9,6 +9,8 @@ module.exports = {
         text: "#333333",
         iconsBg: "#E3DFF9",
         unselectedItem: "#717171",
+        white: "#FEFEFE",
+        cardBg: '#F5F5F5',
       },
     },
   },
