@@ -9,10 +9,13 @@ import { Link } from "expo-router";
 
 const SignIn = () => {
   const [form, setform] = useState({ email: "", password: "" });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const submit = () => {};
+
   return (
     <SafeAreaView className="bg-cardBg h-full">
       <ScrollView>
-        <View className="w-full justify-center min-h-[72vh] px-4">
+        <View className="w-full justify-center min-h-[72vh] px-8 py-8">
           <Image
             source={images.logo}
             resizeMode="contain"
@@ -45,9 +48,9 @@ const SignIn = () => {
 
           <CustomButton
             title="Sign In"
-            // handlePress={submit}
+            handlePress={submit}
             containerStyles="mx-3 mt-12"
-            // isLoading={isSubmitting}
+            isLoading={isSubmitting}
           />
           <View className="pt-3 flex-row gap-2 justify-start mx-3">
             <Text className="text-base color-text font-pregular">

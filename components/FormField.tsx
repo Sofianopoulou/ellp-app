@@ -29,10 +29,10 @@ const FormField: React.FC<FormFieldProps> = ({
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <View className={`space-y-2 m-3 ${otherStyles}`}>
+    <View className={`space-y-1 m-2 ${otherStyles}`}>
       <Text className="text-base text-gray-400 font-pmedium">{title}</Text>
 
-      <View className="w-full h-14 px-4 bg-black-100 rounded-2xl border-2 border-gray-400 focus:border-secondary flex flex-row items-center">
+      <View className="w-full h-12 px-4 bg-black-100 rounded-2xl border-2 border-gray-400 focus:border-secondary flex flex-row items-center">
         <TextInput
           className="flex-1 color-text font-psemibold text-base"
           value={value}
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 16,
-    color: "#333333", // Replace 'color-text' with your desired color
+    color: "#333333",
     marginBottom: 5,
   },
   input: {
