@@ -10,9 +10,9 @@ import {
 interface CustomButtonProps {
   title: string;
   handlePress: () => void;
-  containerStyles?: ViewStyle | ViewStyle[]; // optional, can be ViewStyle or an array of styles
-  textStyles?: TextStyle | TextStyle[]; // also optional, can be TextStyle or an array of styles
-  isLoading?: boolean; // optional, defaults to false
+  containerStyles?: ViewStyle | ViewStyle[];
+  textStyles?: TextStyle | TextStyle[];
+  isLoading?: boolean;
 }
 
 const CustomButton: React.FC<CustomButtonProps> = ({
