@@ -1,12 +1,15 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+// (tabs)/profile.tsx
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import Profile from "../screens/profile/Profile";
+import Membership from "../screens/profile/Membership";
 
-const Profile = () => {
+const ProfileStack = createNativeStackNavigator();
+
+export default function ProfileStackScreen() {
   return (
-    <View className="flex-1 items-center justify-center bg-white">
-      <Text>Profile</Text>
-    </View>
-  )
+    <ProfileStack.Navigator screenOptions={{ headerShown: false }}>
+      <ProfileStack.Screen name="Profile" component={Profile} />
+      <ProfileStack.Screen name="Membership" component={Membership} />
+    </ProfileStack.Navigator>
+  );
 }
-
-export default Profile
