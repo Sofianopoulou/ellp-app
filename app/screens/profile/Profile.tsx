@@ -8,10 +8,14 @@ import Feather from "@expo/vector-icons/Feather";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import AntDesign from "@expo/vector-icons/AntDesign";
 
+import { useNavigation } from "expo-router";
+
 const Profile = () => {
   const onPress = () => {
     console.log("View Membership Pressed");
   };
+
+  const navigation = useNavigation();
 
   return (
     <View

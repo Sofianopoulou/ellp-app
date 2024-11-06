@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { FontAwesome } from "@expo/vector-icons"; // For the heart and discount icon
+import colors from "@/assets/colors/colors";
 
 const DiscountProfileCard = () => {
   const image = require("../assets/images/event-example.jpg");
@@ -43,7 +44,7 @@ const styles = StyleSheet.create({
     padding: 16,
     margin: 16,
     borderRadius: 12,
-    backgroundColor: "#fff",
+    backgroundColor: colors.white,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
@@ -62,12 +63,12 @@ const styles = StyleSheet.create({
   },
   location: {
     fontSize: 12,
-    color: "#888",
-    fontWeight: "bold",
+    color: colors.btm_nav_unselected,
+    fontFamily: "Lexend-Regular",
   },
   title: {
     fontSize: 18,
-    fontWeight: "bold",
+    fontFamily: "Lexend-Regular",
     color: "#333",
     marginVertical: 4,
   },
@@ -81,10 +82,11 @@ const styles = StyleSheet.create({
   },
   discountText: {
     fontSize: 14,
-    color: "#555",
+    color: colors.btm_nav_unselected,
+    fontFamily: "Lexend-Regular",
   },
   button: {
-    backgroundColor: "#007bff",
+    backgroundColor: colors.secondary,
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 20,
@@ -93,8 +95,8 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
   },
   buttonText: {
-    color: "#fff",
-    fontWeight: "bold",
+    color: colors.white,
+    fontFamily: "Lexend-Medium",
     fontSize: 14,
   },
   heartIcon: {

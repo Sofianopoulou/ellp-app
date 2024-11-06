@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { Image } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
+import colors from "@/assets/colors/colors";
 
 type DiscountCardProps = {
   imageUrl: string;
@@ -70,7 +71,7 @@ const styles = StyleSheet.create({
     margin: 16,
     borderRadius: 12,
     overflow: "hidden",
-    backgroundColor: "#fff",
+    backgroundColor: colors.white,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
@@ -93,12 +94,12 @@ const styles = StyleSheet.create({
   },
   location: {
     fontSize: 12,
-    color: "#888",
-    fontWeight: "bold",
+    color: colors.btm_nav_unselected,
+    fontFamily: "Lexend-Regular",
   },
   title: {
     fontSize: 18,
-    fontWeight: "bold",
+    fontFamily: "Lexend-Regular",
     color: "#333",
     marginBottom: 4,
   },
@@ -112,19 +113,20 @@ const styles = StyleSheet.create({
   },
   discountText: {
     fontSize: 14,
-    color: "#555",
+    color: colors.btm_nav_unselected,
+    fontFamily: "Lexend-Regular",
   },
   button: {
     alignSelf: "flex-start",
-    backgroundColor: "#007bff",
+    backgroundColor: colors.secondary,
     paddingVertical: 6,
     paddingHorizontal: 14,
     borderRadius: 20,
     marginTop: 10,
   },
   buttonText: {
-    color: "#fff",
-    fontWeight: "bold",
+    color: colors.white,
+    fontFamily: "Lexend-Medium",
     fontSize: 14,
   },
 });

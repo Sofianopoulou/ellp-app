@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
+import colors from "@/assets/colors/colors";
 
 type EventCardProps = {
   imageUrl: string;
@@ -73,30 +74,33 @@ const styles = StyleSheet.create({
   },
   date: {
     fontSize: 14,
-    color: "#888",
-    marginBottom: 4,
+    color: colors.btm_nav_unselected,
+    marginBottom: 6,
+    fontFamily: "Lexend-Regular",
   },
   title: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontFamily: "Lexend-Regular",
     color: "#333",
+    marginBottom: 4,
   },
   description: {
     fontSize: 14,
     color: "#555",
-    marginBottom: 12,
+    fontFamily: "Lexend-Regular",
+    marginBottom: 8,
   },
   button: {
     alignSelf: "flex-start",
-    backgroundColor: "#007bff",
+    backgroundColor: colors.secondary,
     paddingVertical: 6,
     paddingHorizontal: 14,
     borderRadius: 20,
     marginTop: 10,
   },
   buttonText: {
-    color: "#fff",
-    fontWeight: "bold",
+    color: colors.white,
+    fontFamily: "Lexend-Medium",
     fontSize: 16,
   },
 });

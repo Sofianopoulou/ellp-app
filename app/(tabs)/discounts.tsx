@@ -1,5 +1,4 @@
 import { View, StyleSheet, FlatList } from "react-native";
-import React from "react";
 import images from "@/assets/images";
 import DiscountCard from "@/components/DiscountCard";
 import DiscountProfileCard from "@/components/DiscountProfileCard";
@@ -42,6 +41,7 @@ const Discounts = () => {
   return (
     <View style={styles.container}>
       <FlatList
+        showsVerticalScrollIndicator={false}
         data={discountData}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (

@@ -38,6 +38,7 @@ const Events = () => {
     <View style={styles.container}>
       <FlatList
         data={discountData}
+        showsVerticalScrollIndicator={false}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <EventCard
