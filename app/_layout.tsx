@@ -52,10 +52,6 @@ export default function RootLayout() {
             headerShown: false,
           }}
         />
-        <Stack.Screen
-          name="screens\profile\Membership"
-          options={{ headerShown: false, title: "Membership" }}
-        />
       </Stack>
     </ThemeProvider>
   );

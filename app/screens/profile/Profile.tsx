@@ -2,20 +2,27 @@ import MediumButtonComponent from "@/components/MediumButtonComponent";
 import { View, Text } from "react-native";
 import colors from "@/assets/colors/colors";
 import MenuItem from "@/components/MenuItem";
-import { Link } from "expo-router";
 
 import Feather from "@expo/vector-icons/Feather";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import AntDesign from "@expo/vector-icons/AntDesign";
 
-import { useNavigation } from "expo-router";
+import { useNavigation } from "@react-navigation/native";
+import { RootStackParamList } from "@/app/types/Navigation";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+
+type ProfileScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "Profile"
+>;
 
 const Profile = () => {
+  const navigation = useNavigation<ProfileScreenNavigationProp>();
+
   const onPress = () => {
+    navigation.navigate("Membership");
     console.log("View Membership Pressed");
   };
-
-  const navigation = useNavigation();
 
   return (
     <View
@@ -46,9 +53,8 @@ const Profile = () => {
             email@address.com
           </Text>
         </View>
-        <Link href="/screens/profile/Membership">
-          <MediumButtonComponent title="View Membership" onPress={onPress} />
-        </Link>
+
+        <MediumButtonComponent title="View Membership" onPress={onPress} />
       </View>
 
       <View style={{ height: 1, backgroundColor: colors.grey_background }} />
@@ -71,7 +77,7 @@ const Profile = () => {
           <Ionicons name="information" size={24} color={colors.secondary} />
         }
         text="Information"
-        onPress={() => console.log("Information pressed")}
+        onPress={() => navigation.navigate("InfoPage")}
       />
       <MenuItem
         icon={<AntDesign name="logout" size={24} color={colors.secondary} />}

@@ -67,11 +67,11 @@ const Onboarding = () => {
         renderItem={({ item }) => <OnboardingItem item={item} />}
       />
       <Paginator data={slides} scrollX={scrollX} />
-      <View className="items-center" style={{ height: 64 }}>
+      <View style={{ height: 64, alignItems: "center" }}>
         <SmallButtonComponent title="Next" onPress={handleNextPress} />
       </View>
       {currentIndex < slides.length - 1 && (
-        <View className="items-center">
+        <View style={{ alignItems: "center" }}>
           <Link href="/">
             <SkipButton
               title="Skip"

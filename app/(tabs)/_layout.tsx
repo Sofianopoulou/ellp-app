@@ -10,8 +10,6 @@ import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import colors from "@/assets/colors/colors";
 
-import ProfileStackScreen from "@/app/(tabs)/profile";
-
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   const [loaded, error] = useFonts({

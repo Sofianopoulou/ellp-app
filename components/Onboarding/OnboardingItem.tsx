@@ -35,7 +35,14 @@ const OnboardingItem = ({ item }: OnboardingItemProps): JSX.Element => {
 
   if (!loaded && !error) {
     return (
-      <View className="flex justify-center items-center" style={{ width }}>
+      <View
+        style={{
+          width,
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         <ActivityIndicator size="large" color={colors.black} />
         <Text>Loading...</Text>
       </View>

@@ -1,12 +1,21 @@
 import { View, Text, Image, Dimensions } from "react-native";
 import colors from "@/assets/colors/colors";
 import { IoPerson } from "react-icons/io5";
-import { Link } from "expo-router";
 import MembershipStatus from "@/components/MembershipStatus";
 import { User } from "@/app/types/User";
 
+import { useNavigation } from "@react-navigation/native";
+import { RootStackParamList } from "@/app/types/Navigation";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+
+type ProfileScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "Profile"
+>;
+
 const Membership = () => {
   const { width, height } = Dimensions.get("window");
+  const navigation = useNavigation<ProfileScreenNavigationProp>();
 
   // Sample User Object
   const user: User = {
@@ -113,13 +122,13 @@ const Membership = () => {
           ) : (
             <Text style={{ fontFamily: "Lexend-Regular", color: colors.text }}>
               Ready to become a member?{" "}
-              <Link
+              <Text
                 // navigate to ellp membership card screen
-                href={{ pathname: "/screens/profile/JoinUs" }}
+                onPress={() => navigation.navigate("JoinUs")}
                 style={{ color: colors.secondary, fontFamily: "Lexend-Medium" }}
               >
                 Join us here!
-              </Link>
+              </Text>
             </Text>
           )}
         </View>

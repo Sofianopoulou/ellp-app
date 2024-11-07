@@ -3,10 +3,18 @@ import colors from "@/assets/colors/colors";
 import { CiCalendar } from "react-icons/ci";
 import { VscPercentage } from "react-icons/vsc";
 import { MdGroups } from "react-icons/md";
-import { Link } from "expo-router";
+import { useNavigation } from "@react-navigation/native";
+import { RootStackParamList } from "@/app/types/Navigation";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+
+type ProfileScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "Profile"
+>;
 
 const JoinUs = () => {
   const { width, height } = Dimensions.get("window");
+  const navigation = useNavigation<ProfileScreenNavigationProp>();
 
   return (
     <View
@@ -136,26 +144,25 @@ const JoinUs = () => {
           </Text>
         </View>
 
-        <Link href="/screens/profile/PaymentScreen">
-          <TouchableOpacity
+        <TouchableOpacity
+          style={{
+            backgroundColor: colors.fitness_tab,
+            paddingVertical: 10,
+            paddingHorizontal: 20,
+            borderRadius: 25,
+          }}
+        >
+          <Text
             style={{
-              backgroundColor: colors.fitness_tab,
-              paddingVertical: 10,
-              paddingHorizontal: 20,
-              borderRadius: 25,
+              color: colors.white,
+              fontFamily: "Lexend-Regular",
+              fontSize: 16,
             }}
+            onPress={() => navigation.navigate("PaymentScreen")}
           >
-            <Text
-              style={{
-                color: colors.white,
-                fontFamily: "Lexend-Regular",
-                fontSize: 16,
-              }}
-            >
-              Buy Now
-            </Text>
-          </TouchableOpacity>
-        </Link>
+            Buy Now
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
