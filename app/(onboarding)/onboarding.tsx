@@ -3,7 +3,8 @@ import { useState, useEffect } from "react";
 import Onboarding from "@/components/Onboarding/Onboarding";
 import colors from "@/assets/colors/colors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import HomeScreen from "../index";
+import HomeScreen from "..";
+import Profile from "../screens/profile/Profile";
 
 const Loading = () => (
   <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -31,13 +32,7 @@ const OnboardingPage = () => {
 
   return (
     <View style={{ flex: 1, backgroundColor: colors.white }}>
-      {loading ? (
-        <Loading />
-      ) : viewedOnboarding ? (
-        <HomeScreen />
-      ) : (
-        <Onboarding />
-      )}
+      {loading ? <Loading /> : viewedOnboarding ? <Profile /> : <HomeScreen />}
     </View>
   );
 };

@@ -9,6 +9,7 @@ import { Ionicons } from "@expo/vector-icons";
 import colors from "@/assets/colors/colors";
 
 import { NativeStackNavigationOptions } from "@react-navigation/native-stack";
+import ProfileSettings from "../screens/profile/ProfileSettings";
 
 const ProfileStack = createNativeStackNavigator();
 
@@ -66,6 +67,17 @@ export default function ProfileStackScreen() {
       <ProfileStack.Screen
         name="InfoPage"
         component={InfoPage}
+        options={({ navigation }) => ({
+          headerShown: true,
+          headerLeft: () => <BackButton navigation={navigation} />,
+          headerTitle: "",
+          headerShadowVisible: false,
+        })}
+      />
+
+      <ProfileStack.Screen
+        name="ProfileSettings"
+        component={ProfileSettings}
         options={({ navigation }) => ({
           headerShown: true,
           headerLeft: () => <BackButton navigation={navigation} />,

@@ -1,11 +1,20 @@
-import { View, Text, Image, Dimensions, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  Dimensions,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import colors from "@/assets/colors/colors";
-import { CiCalendar } from "react-icons/ci";
-import { VscPercentage } from "react-icons/vsc";
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { MdGroups } from "react-icons/md";
 import { useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "@/app/types/Navigation";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 type ProfileScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -17,154 +26,162 @@ const JoinUs = () => {
   const navigation = useNavigation<ProfileScreenNavigationProp>();
 
   return (
-    <View
-      style={{
-        backgroundColor: colors.white,
-        flex: 1,
-        paddingHorizontal: 20,
-        paddingTop: 20,
-      }}
-    >
-      <Image
-        source={require("../../../assets/images/ellp-card.jpg")}
-        style={{
-          width: width * 0.9,
-          height: height * 0.4,
-          alignSelf: "center",
-          marginBottom: 20,
-          borderRadius: 15,
-        }}
-        resizeMode="cover"
-      />
-      <View style={{ alignItems: "center", marginBottom: 20 }}>
-        <Text
-          style={{
-            fontFamily: "Lexend-SemiBold",
-            color: colors.text,
-            fontSize: 18,
-            textAlign: "left",
-            marginBottom: 8,
-          }}
-        >
-          Join the{" "}
-          <Text style={{ color: colors.secondary }}>ELLP Membership</Text> and
-          Get Your Virtual Card Today!
-        </Text>
-        <Text
-          style={{
-            color: colors.text,
-            fontFamily: "Lexend-Light",
-            fontSize: 14,
-            textAlign: "left",
-          }}
-        >
-          No wallet, no physical card—just pure convenience. Live the island
-          life with exclusive discounts and perks!
-        </Text>
-      </View>
-
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View
         style={{
-          flexDirection: "row",
-          justifyContent: "space-around",
-          marginBottom: 30,
-        }}
-      >
-        <View style={{ alignItems: "center" }}>
-          <CiCalendar size={40} color={colors.secondary} />
-          <Text
-            style={{
-              fontSize: 14,
-              fontFamily: "Lexend-Regular",
-              color: colors.secondary,
-            }}
-          >
-            Weekly Events
-          </Text>
-        </View>
-
-        <View style={{ alignItems: "center" }}>
-          <VscPercentage size={40} color={colors.secondary} />
-          <Text
-            style={{
-              fontSize: 14,
-              fontFamily: "Lexend-Regular",
-              color: colors.secondary,
-            }}
-          >
-            Discounts
-          </Text>
-        </View>
-
-        <View style={{ alignItems: "center" }}>
-          <MdGroups size={40} color={colors.secondary} />
-          <Text
-            style={{
-              fontSize: 14,
-              fontFamily: "Lexend-Regular",
-              color: colors.secondary,
-            }}
-          >
-            Community
-          </Text>
-        </View>
-      </View>
-
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-          width: "100%",
+          backgroundColor: colors.white,
+          flex: 1,
           paddingHorizontal: 20,
         }}
       >
-        <View style={{ flexDirection: "column" }}>
+        <Image
+          source={require("../../../assets/images/ellp-card.jpg")}
+          style={{
+            width: width * 0.9,
+            height: height * 0.38,
+            alignSelf: "center",
+            borderRadius: 15,
+          }}
+          resizeMode="cover"
+        />
+        <View style={{ alignItems: "center", marginBottom: 20 }}>
           <Text
             style={{
               fontFamily: "Lexend-SemiBold",
+              color: colors.text,
               fontSize: 18,
-              color: colors.secondary,
-              marginBottom: 5,
+              textAlign: "left",
+              marginBottom: 8,
             }}
           >
-            ELLP Membership
+            Join the{" "}
+            <Text style={{ color: colors.secondary }}>ELLP Membership</Text> and
+            Get Your Virtual Card Today!
           </Text>
           <Text
             style={{
-              fontFamily: "Lexend-Medium",
-              fontSize: 18,
               color: colors.text,
+              fontFamily: "Lexend-Light",
+              fontSize: 14,
+              textAlign: "left",
             }}
           >
-            €11,49
-            <Text style={{ fontFamily: "Lexend-Light", fontSize: 16 }}>
-              /year
-            </Text>
+            No wallet, no physical card—just pure convenience. Live the island
+            life with exclusive discounts and perks!
           </Text>
         </View>
 
-        <TouchableOpacity
+        <View
           style={{
-            backgroundColor: colors.fitness_tab,
-            paddingVertical: 10,
-            paddingHorizontal: 20,
-            borderRadius: 25,
+            flexDirection: "row",
+            justifyContent: "space-around",
+            marginBottom: 30,
           }}
         >
-          <Text
+          <View style={{ alignItems: "center" }}>
+            <Ionicons
+              name="calendar-clear-outline"
+              size={40}
+              color={colors.secondary}
+            />
+            <Text
+              style={{
+                fontSize: 14,
+                fontFamily: "Lexend-Regular",
+                color: colors.secondary,
+              }}
+            >
+              Weekly Events
+            </Text>
+          </View>
+
+          <View style={{ alignItems: "center" }}>
+            <FontAwesome6
+              name="percentage"
+              size={40}
+              color={colors.secondary}
+            />
+            <Text
+              style={{
+                fontSize: 14,
+                fontFamily: "Lexend-Regular",
+                color: colors.secondary,
+              }}
+            >
+              Discounts
+            </Text>
+          </View>
+
+          <View style={{ alignItems: "center" }}>
+            <MaterialIcons name="groups" size={40} color={colors.secondary} />
+            <Text
+              style={{
+                fontSize: 14,
+                fontFamily: "Lexend-Regular",
+                color: colors.secondary,
+              }}
+            >
+              Community
+            </Text>
+          </View>
+        </View>
+
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            width: "100%",
+            paddingHorizontal: 10,
+          }}
+        >
+          <View style={{ flexDirection: "column" }}>
+            <Text
+              style={{
+                fontFamily: "Lexend-SemiBold",
+                fontSize: 18,
+                color: colors.secondary,
+                marginBottom: 5,
+              }}
+            >
+              ELLP Membership
+            </Text>
+            <Text
+              style={{
+                fontFamily: "Lexend-Medium",
+                fontSize: 18,
+                color: colors.text,
+              }}
+            >
+              €11,49
+              <Text style={{ fontFamily: "Lexend-Light", fontSize: 16 }}>
+                /year
+              </Text>
+            </Text>
+          </View>
+
+          <TouchableOpacity
             style={{
-              color: colors.white,
-              fontFamily: "Lexend-Regular",
-              fontSize: 16,
+              backgroundColor: colors.fitness_tab,
+              paddingVertical: 10,
+              paddingHorizontal: 16,
+              borderRadius: 25,
             }}
-            onPress={() => navigation.navigate("PaymentScreen")}
           >
-            Buy Now
-          </Text>
-        </TouchableOpacity>
+            <Text
+              style={{
+                color: colors.white,
+                fontFamily: "Lexend-Regular",
+                fontSize: 16,
+              }}
+              onPress={() => navigation.navigate("PaymentScreen")}
+            >
+              Buy Now
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

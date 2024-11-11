@@ -62,7 +62,7 @@ const Profile = () => {
       <MenuItem
         icon={<Feather name="settings" size={24} color={colors.secondary} />}
         text="Settings"
-        onPress={() => console.log("Settings pressed")}
+        onPress={() => navigation.navigate("ProfileSettings")}
       />
       <MenuItem
         icon={<Feather name="heart" size={24} color={colors.secondary} />}

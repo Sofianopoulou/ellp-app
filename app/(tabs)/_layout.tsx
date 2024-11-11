@@ -1,14 +1,18 @@
 import { Tabs } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
-import { Text, View, StyleSheet } from "react-native";
-import { CiCalendar, CiDiscount1 } from "react-icons/ci";
-import { GoPerson } from "react-icons/go";
+import { Text, View, StyleSheet, Dimensions, Platform } from "react-native";
 import { useFonts } from "expo-font";
 import { useEffect } from "react";
+
+import Ionicons from "@expo/vector-icons/Ionicons";
+import Octicons from "@expo/vector-icons/Octicons";
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import colors from "@/assets/colors/colors";
+
+const { width } = Dimensions.get("window");
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -48,7 +52,8 @@ export default function TabLayout() {
           tabBarIcon: ({ focused }: any) => (
             <View style={focused ? styles.shadowEffect : null}>
               {focused && <View style={styles.activeBar} />}
-              <CiCalendar
+              <Ionicons
+                name="calendar-clear-outline"
                 size={32}
                 color={focused ? colors.black : colors.btm_nav_unselected}
               />
@@ -74,7 +79,9 @@ export default function TabLayout() {
           tabBarIcon: ({ focused }: any) => (
             <View style={focused ? styles.shadowEffect : null}>
               {focused && <View style={styles.activeBar} />}
-              <CiDiscount1
+
+              <FontAwesome6
+                name="percentage"
                 size={30}
                 color={focused ? colors.black : colors.btm_nav_unselected}
               />
@@ -100,7 +107,8 @@ export default function TabLayout() {
           tabBarIcon: ({ focused }: any) => (
             <View style={focused ? styles.shadowEffect : null}>
               {focused && <View style={styles.activeBar} />}
-              <GoPerson
+              <Octicons
+                name="person"
                 size={32}
                 color={focused ? colors.black : colors.btm_nav_unselected}
               />
@@ -123,26 +131,81 @@ export default function TabLayout() {
   );
 }
 
+// const styles = StyleSheet.create({
+//   shadowEffect: {
+//     shadowColor: colors.secondary,
+//     shadowOffset: { width: 0, height: 5 },
+//     shadowRadius: 50,
+//     elevation: 10,
+//     backgroundColor: "rgba(0, 122, 255, 0.17)",
+//     borderRadius: 50,
+//     padding: 1,
+//   },
+//   activeBar: {
+//     position: "absolute",
+//     top: -8,
+//     left: -3,
+//     width: "120%",
+//     height: 8,
+//     backgroundColor: colors.fitness_tab,
+//     borderTopLeftRadius: 8,
+//     borderTopRightRadius: 8,
+//     borderBottomLeftRadius: 0,
+//     borderBottomRightRadius: 0,
+//   },
+// });
+
 const styles = StyleSheet.create({
   shadowEffect: {
-    shadowColor: colors.secondary,
-    shadowOffset: { width: 0, height: 5 },
-    shadowRadius: 50,
-    elevation: 10,
+    ...Platform.select({
+      ios: {
+        shadowColor: colors.secondary,
+        shadowOffset: { width: 0, height: 5 },
+        shadowOpacity: 0.15,
+        shadowRadius: 10, // Reduce radius for mobile consistency
+      },
+      android: {
+        elevation: 6,
+        shadowColor: colors.secondary,
+        shadowOffset: { width: 0, height: 5 },
+      },
+      web: {
+        shadowColor: colors.secondary,
+        shadowOffset: { width: 0, height: 5 },
+        shadowRadius: 50,
+      },
+    }),
     backgroundColor: "rgba(0, 122, 255, 0.17)",
     borderRadius: 50,
     padding: 1,
   },
   activeBar: {
-    position: "absolute",
-    top: -8,
-    left: -3,
-    width: "120%",
-    height: 8,
-    backgroundColor: colors.fitness_tab,
-    borderTopLeftRadius: 8,
-    borderTopRightRadius: 8,
-    borderBottomLeftRadius: 0,
-    borderBottomRightRadius: 0,
+    ...Platform.select({
+      web: {
+        position: "absolute",
+        top: -8,
+        left: "50%", // Start in the center
+        transform: [{ translateX: -15 }], // Offset to center the active bar
+        width: 30, // Fixed width for consistency across tabs
+        height: 8,
+        backgroundColor: colors.fitness_tab,
+        borderTopLeftRadius: 8,
+        borderTopRightRadius: 8,
+        borderBottomLeftRadius: 0,
+        borderBottomRightRadius: 0,
+      },
+      android: {
+        position: "absolute",
+        top: -8,
+        left: -3, // Start in the center
+        width: 30, // Fixed width for consistency across tabs
+        height: 8,
+        backgroundColor: colors.fitness_tab,
+        borderTopLeftRadius: 8,
+        borderTopRightRadius: 8,
+        borderBottomLeftRadius: 0,
+        borderBottomRightRadius: 0,
+      },
+    }),
   },
 });

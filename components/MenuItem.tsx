@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import { IoIosArrowForward } from "react-icons/io";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import colors from "@/assets/colors/colors";
 
 interface MenuItemProps {
@@ -34,11 +34,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
             marginRight: 12,
           }}
         >
-          <IoIosArrowForward
-            name="arrow-forward"
-            size={24}
-            color={colors.black}
-          />
+          <FontAwesome5 name="arrow-right" size={16} color={colors.black} />
         </View>
       )}
     </TouchableOpacity>

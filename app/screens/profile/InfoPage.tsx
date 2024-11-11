@@ -10,8 +10,18 @@ import {
 import colors from "@/assets/colors/colors";
 import { StyleSheet } from "react-native";
 
+import { useNavigation } from "@react-navigation/native";
+import { RootStackParamList } from "@/app/types/Navigation";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+
+type ProfileScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "Profile"
+>;
+
 const InfoPage = () => {
   const { width, height } = Dimensions.get("window");
+  const navigation = useNavigation<ProfileScreenNavigationProp>();
 
   return (
     <ScrollView contentContainerStyle={stylesInfo.container}>
@@ -32,10 +42,21 @@ const InfoPage = () => {
       <Text style={stylesInfo.titleText}>What is ELLP Membership?</Text>
       <Text style={stylesInfo.bodyText}>
         The ELLP Membership unlocks a world of exclusive benefits. As a member,
-        you’ll get access to special discounts at local businesses,entry to our
+        you’ll get access to special discounts at local businesses, entry to our
         top events at reduced rates, and a variety of perks around the island.
         It’s the perfect way to enhance your Erasmus adventure while saving
-        money!
+        money!{" "}
+        <Text style={{ fontFamily: "Lexend-Medium" }}>
+          Unlock the Membership
+          <Text
+            style={{ color: colors.secondary }}
+            onPress={() => navigation.navigate("JoinUs")}
+          >
+            {" "}
+            here{" "}
+          </Text>
+        </Text>
+        .
       </Text>
       <Text style={stylesInfo.titleText}>How to Reach Us</Text>
       <Text style={stylesInfo.bodyText}>
@@ -111,7 +132,7 @@ const InfoPage = () => {
             }
           >
             <Text style={stylesInfo.linkText}>
-              International Students Life Las Palmas Association
+              International Students Life Las Palmas {"\n"}Association
             </Text>
           </TouchableOpacity>
         </View>

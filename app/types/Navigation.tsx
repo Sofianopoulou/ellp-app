@@ -6,6 +6,7 @@ export type RootStackParamList = {
   JoinUs: undefined;
   PaymentScreen: undefined;
   InfoPage: undefined;
+  ProfileSettings: undefined;
 };
 
 export type ProfileScreenProps = StackScreenProps<
@@ -24,4 +25,8 @@ export type PaymentScreenProps = StackScreenProps<
 export type InfoPageScreenProps = StackScreenProps<
   RootStackParamList,
   "InfoPage"
+>;
+export type SettingsPageScreenProps = StackScreenProps<
+  RootStackParamList,
+  "ProfileSettings"
 >;
