@@ -16,6 +16,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import LargeButtonComponent from "@/components/LargeButtonComponent";
 import { useState } from "react";
+import CustomAlert from "@/components/CustomAlert";
 
 const ProfileSettings = () => {
   const [placeholders, setPlaceholders] = useState({
@@ -25,20 +26,20 @@ const ProfileSettings = () => {
     password: "************",
   });
 
+  const [isAlertVisible, setAlertVisible] = useState(false);
+  const [alertTitle, setAlertTitle] = useState("Delete Profile"); // Default title
+  const [alertMessage, setAlertMessage] = useState(
+    "Are you sure you want to delete your profile? This action cannot be undone."
+  );
+
   const handleDeleteProfile = () => {
-    Alert.alert(
-      "Delete Profile",
-      "Are you sure you want to delete your profile? This action cannot be undone.",
-      [
-        { text: "Cancel", style: "cancel" },
-        {
-          text: "Delete",
-          style: "destructive",
-          onPress: () => console.log("Profile Deleted"),
-          // delete logic
-        },
-      ]
-    );
+    setAlertVisible(true);
+  };
+
+  const handleConfirmDelete = () => {
+    console.log("Profile Deleted");
+    setAlertVisible(false);
+    // delete logic here
   };
 
   return (
@@ -146,6 +147,14 @@ const ProfileSettings = () => {
             onPress={handleDeleteProfile}
           >
             <Text style={styles.deleteButtonText}>Delete Profile</Text>
+            <CustomAlert
+              visible={isAlertVisible}
+              onClose={() => setAlertVisible(false)}
+              onAction={handleConfirmDelete}
+              title={alertTitle}
+              message={alertMessage}
+              actionText="Delete"
+            />
           </TouchableOpacity>
         </View>
       </ScrollView>

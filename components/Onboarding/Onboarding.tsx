@@ -7,13 +7,14 @@ import Paginator from "./Paginator";
 import SmallButtonComponent from "../SmallButtonComponent";
 import SkipButton from "./SkipButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 
 const Onboarding = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showLogoPage, setShowLogoPage] = useState(true);
   const scrollX = useRef(new Animated.Value(0)).current;
   const slidesRef = useRef<FlatList<any>>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -39,12 +40,22 @@ const Onboarding = () => {
     } else {
       try {
         await AsyncStorage.setItem("@viewedOnboarding", "true");
+        router.replace("/");
       } catch (err) {
         console.log("Error @setItem: ", err);
       }
     }
 
     console.log("currentIndex: ", currentIndex);
+  };
+
+  const handleSkipPress = async () => {
+    try {
+      await AsyncStorage.setItem("@viewedOnboarding", "true");
+      router.replace("/");
+    } catch (err) {
+      console.log("Error @setItem:", err);
+    }
   };
 
   return (
@@ -67,19 +78,14 @@ const Onboarding = () => {
         renderItem={({ item }) => <OnboardingItem item={item} />}
       />
       <Paginator data={slides} scrollX={scrollX} />
-      <View style={{ height: 64, alignItems: "center" }}>
+      <View
+        style={{ height: 64, alignItems: "center", justifyContent: "center" }}
+      >
         <SmallButtonComponent title="Next" onPress={handleNextPress} />
       </View>
       {currentIndex < slides.length - 1 && (
         <View style={{ alignItems: "center" }}>
-          <Link href="/">
-            <SkipButton
-              title="Skip"
-              onPress={async () =>
-                await AsyncStorage.setItem("@viewedOnboarding", "true")
-              }
-            />
-          </Link>
+          <SkipButton title="Skip" onPress={handleSkipPress} />
         </View>
       )}
     </View>
