@@ -15,10 +15,10 @@
     "preset": "jest-expo"
   },
   "dependencies": {
-    "@react-native-async-storage/async-storage": "^2.0.0",
+    "@react-native-async-storage/async-storage": "^1.23.1",
     "@react-navigation/native": "^6.1.18",
-    "expo": "^51.0.38",
-    "expo-router": "^3.5.23",
+    "expo": "~51.0.39",
+    "expo-router": "~3.5.24",
     "expo-status-bar": "^1.12.1",
     "nativewind": "^4.1.23",
     "react": "^18.2.0",

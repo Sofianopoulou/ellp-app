@@ -50,14 +50,24 @@ const OnboardingItem = ({ item }: OnboardingItemProps): JSX.Element => {
   }
 
   return (
-    <View className="flex items-center" style={{ width, padding: 20 }}>
+    <View
+      className="flex items-center"
+      style={{
+        width,
+        paddingHorizontal: 16,
+        paddingTop: 20,
+        paddingBottom: 30,
+      }}
+    >
       <Image
         source={item.image}
         className="rounded-lg"
-        style={{ width: "100%", height: height * 0.45, borderRadius: 0 }}
+        style={{ width: "100%", height: height * 0.45 }}
         resizeMode="cover"
       />
-      <View style={{ alignItems: "center", marginTop: 20 }}>
+      <View
+        style={{ alignItems: "center", marginTop: 20, maxWidth: width * 0.9 }}
+      >
         <Text
           style={{
             fontFamily: "Lexend-SemiBold",
@@ -75,7 +85,7 @@ const OnboardingItem = ({ item }: OnboardingItemProps): JSX.Element => {
             color: colors.black,
             fontSize: 16,
             textAlign: "center",
-            paddingHorizontal: 20,
+            paddingHorizontal: 10,
           }}
         >
           {item.description}
