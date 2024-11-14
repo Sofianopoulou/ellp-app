@@ -8,14 +8,14 @@ export default [
   },
   {
     id: "2",
-    title: "Unlock Your ELLP Membership",
+    title: "Unlock Your Membership",
     description:
-      "Get full access to exclusive perks and events with your ELLP membership. Purchase now and elevate your experience!",
+      "Get full access to exclusive perks and events with your ELLP membership. Purchase to elevate your experience!",
     image: require("../ELLP/assets/images/onboarding/onboarding-image-2.jpeg"),
   },
   {
     id: "3",
-    title: "Discover Exclusive Discounts",
+    title: "Discover Big Discounts",
     description:
       "Unlock amazing deals and special offers just for you. Explore and save with your ELLP membership today!",
     image: require("../ELLP/assets/images/onboarding/onboarding-image-3.jpg"),

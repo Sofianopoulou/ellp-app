@@ -121,7 +121,7 @@ const InfoPage = () => {
 
         <View style={stylesInfo.contactRow}>
           <Image
-            source={require("../../../assets/images/social-media-logos/linkedin-logo.svg")}
+            source={require("../../../assets/images/social-media-logos/linkedin-logo.png")}
             style={stylesInfo.icon}
           />
           <TouchableOpacity

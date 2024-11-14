@@ -10,7 +10,7 @@ const Paginator = ({ data, scrollX }: PaginatorProps) => {
   const { width } = useWindowDimensions();
 
   return (
-    <View style={{ alignItems: "center", marginTop: 20 }}>
+    <View style={{ alignItems: "center" }}>
       <View style={{ flexDirection: "row", height: 64 }}>
         {data.map((_, index: number) => {
           const inputRange = [

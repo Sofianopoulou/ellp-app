@@ -10,6 +10,11 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import { useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "@/app/types/Navigation";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import SmallButtonComponent from "@/components/SmallButtonComponent";
+
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useState } from "react";
+import CustomAlert from "@/components/CustomAlert";
 
 type ProfileScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -17,11 +22,30 @@ type ProfileScreenNavigationProp = NativeStackNavigationProp<
 >;
 
 const Profile = () => {
+  const [isAlertVisible, setAlertVisible] = useState(false);
+  const [alertTitle, setAlertTitle] = useState("Logout"); // Default title
+  const [alertMessage, setAlertMessage] = useState(
+    "Are you sure you want to logout? "
+  );
+
   const navigation = useNavigation<ProfileScreenNavigationProp>();
 
-  const onPress = () => {
-    navigation.navigate("Membership");
-    console.log("View Membership Pressed");
+  const clearOnboarding = async () => {
+    try {
+      await AsyncStorage.removeItem("@viewedOnboarding");
+    } catch (err) {
+      console.log("Error @clearOnboarding: ", err);
+    }
+  };
+
+  const handleLogout = () => {
+    setAlertVisible(true);
+  };
+
+  const handleConfirmLogout = () => {
+    console.log("Logged Out");
+    setAlertVisible(false);
+    // logged logic here
   };
 
   return (
@@ -54,7 +78,17 @@ const Profile = () => {
           </Text>
         </View>
 
-        <MediumButtonComponent title="View Membership" onPress={onPress} />
+        <MediumButtonComponent
+          title="View Membership"
+          onPress={() => navigation.navigate("Membership")}
+        />
+
+        {/* onboarding testing button */}
+        <SmallButtonComponent
+          title="Clear Onboarding"
+          onPress={clearOnboarding}
+          style={{ margin: 10 }}
+        />
       </View>
 
       <View style={{ height: 1, backgroundColor: colors.grey_background }} />
@@ -79,13 +113,23 @@ const Profile = () => {
         text="Information"
         onPress={() => navigation.navigate("InfoPage")}
       />
-      <MenuItem
-        icon={<AntDesign name="logout" size={24} color={colors.secondary} />}
-        text="Logout"
-        textColor={colors.red_text}
-        onPress={() => console.log("Logout pressed")}
-        showArrow={false}
-      />
+      <View>
+        <MenuItem
+          icon={<AntDesign name="logout" size={24} color={colors.secondary} />}
+          text="Logout"
+          textColor={colors.red_text}
+          onPress={handleLogout}
+          showArrow={false}
+        />
+        <CustomAlert
+          visible={isAlertVisible}
+          onClose={() => setAlertVisible(false)}
+          onAction={handleConfirmLogout}
+          title={alertTitle}
+          message={alertMessage}
+          actionText="Logout"
+        />
+      </View>
     </View>
   );
 };
