@@ -7,6 +7,7 @@
     "icon": "./assets/images/ellp-logo.png",
     "scheme": "ellp",
     "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
     "splash": {
       "image": "./assets/images/ellp-logo.png",
       "resizeMode": "contain",
