@@ -7,6 +7,7 @@ export type RootStackParamList = {
   PaymentScreen: undefined;
   InfoPage: undefined;
   ProfileSettings: undefined;
+  SignIn: undefined;
 };
 
 export type ProfileScreenProps = StackScreenProps<
@@ -30,3 +31,4 @@ export type SettingsPageScreenProps = StackScreenProps<
   RootStackParamList,
   "ProfileSettings"
 >;
+export type SignInScreenProps = StackScreenProps<RootStackParamList, "SignIn">;

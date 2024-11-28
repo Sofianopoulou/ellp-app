@@ -16,6 +16,7 @@ type DiscountCardProps = {
   location: string;
   title: string;
   discount: string;
+  category?: string;
   onPress: () => void;
 };
 

@@ -162,12 +162,13 @@ const styles = StyleSheet.create({
         shadowColor: colors.secondary,
         shadowOffset: { width: 0, height: 5 },
         shadowOpacity: 0.15,
-        shadowRadius: 10, // Reduce radius for mobile consistency
+        shadowRadius: 50, // Reduce radius for mobile consistency
       },
       android: {
-        elevation: 6,
         shadowColor: colors.secondary,
-        shadowOffset: { width: 0, height: 5 },
+        shadowOffset: { width: 0, height: 3 },
+        shadowOpacity: 0.15,
+        shadowRadius: 5,
       },
       web: {
         shadowColor: colors.secondary,
@@ -176,7 +177,7 @@ const styles = StyleSheet.create({
       },
     }),
     backgroundColor: "rgba(0, 122, 255, 0.17)",
-    borderRadius: 50,
+    borderRadius: 20,
     padding: 1,
   },
   activeBar: {

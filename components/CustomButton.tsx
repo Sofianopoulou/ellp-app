@@ -1,10 +1,12 @@
+import colors from "@/assets/colors/colors";
 import React from "react";
 import {
   ActivityIndicator,
   Text,
-  TextStyle,
   TouchableOpacity,
+  StyleSheet,
   ViewStyle,
+  TextStyle,
 } from "react-native";
 
 interface CustomButtonProps {
@@ -26,25 +28,47 @@ const CustomButton: React.FC<CustomButtonProps> = ({
     <TouchableOpacity
       onPress={handlePress}
       activeOpacity={0.7}
-      className={`bg-secondary rounded-xl min-h-[58px] flex flex-row justify-center items-center ${containerStyles} ${
-        isLoading ? "opacity-50" : ""
-      }`}
+      style={[
+        styles.buttonContainer,
+        containerStyles,
+        isLoading && styles.loadingOpacity,
+      ]}
       disabled={isLoading}
     >
-      <Text className={`color-white font-psemibold text-lg ${textStyles}`}>
-        {title}
-      </Text>
+      <Text style={[styles.buttonText, textStyles]}>{title}</Text>
 
       {isLoading && (
         <ActivityIndicator
           animating={isLoading}
           color="#fff"
           size="small"
-          className="ml-2"
+          style={styles.loadingIndicator}
         />
       )}
     </TouchableOpacity>
   );
 };
+
+const styles = StyleSheet.create({
+  buttonContainer: {
+    backgroundColor: colors.tertiary,
+    borderRadius: 5,
+    minHeight: 58,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  buttonText: {
+    color: colors.white,
+    fontFamily: "Lexend-Medium",
+    fontSize: 18,
+  },
+  loadingOpacity: {
+    opacity: 0.5,
+  },
+  loadingIndicator: {
+    marginLeft: 8, // Spacing between text and loading indicator
+  },
+});
 
 export default CustomButton;

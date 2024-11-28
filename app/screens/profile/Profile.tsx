@@ -12,9 +12,11 @@ import { RootStackParamList } from "@/app/types/Navigation";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import SmallButtonComponent from "@/components/SmallButtonComponent";
 
+import { getAuth, signOut } from "firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState } from "react";
 import CustomAlert from "@/components/CustomAlert";
+import { useRouter } from "expo-router";
 
 type ProfileScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -27,6 +29,7 @@ const Profile = () => {
   const [alertMessage, setAlertMessage] = useState(
     "Are you sure you want to logout? "
   );
+  const router = useRouter(); // Hook to navigate programmatically
 
   const navigation = useNavigation<ProfileScreenNavigationProp>();
 
@@ -42,10 +45,18 @@ const Profile = () => {
     setAlertVisible(true);
   };
 
-  const handleConfirmLogout = () => {
-    console.log("Logged Out");
+  const handleConfirmLogout = async () => {
+    try {
+      const auth = getAuth(); // Get Firebase Auth instance
+      await signOut(auth); // Sign out the user from Firebase
+      console.log("Logged Out");
+
+      // Navigate the user to the login screen
+      router.push("/(auth)/sign-in");
+    } catch (error) {
+      console.log("Error during logout:", error);
+    }
     setAlertVisible(false);
-    // logged logic here
   };
 
   return (

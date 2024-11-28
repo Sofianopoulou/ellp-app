@@ -1,46 +1,84 @@
-import { View, Text, ScrollView } from "react-native";
-import React, { useState } from "react";
+import { View, Text, ScrollView, StyleSheet, Image } from "react-native";
+import { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Image } from "react-native";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { useRouter } from "expo-router";
 import images from "@/assets/images";
 import FormField from "@/components/FormField";
 import CustomButton from "@/components/CustomButton";
 import { Link } from "expo-router";
+import colors from "@/assets/colors/colors";
 
 const SignIn = () => {
-  const [form, setform] = useState({ email: "", password: "" });
+  const [form, setForm] = useState({ email: "", password: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const submit = () => {};
+  const [error, setError] = useState("");
+  const router = useRouter();
+
+  const submit = async () => {
+    setIsSubmitting(true);
+    setError("");
+
+    try {
+      const auth = getAuth();
+      await signInWithEmailAndPassword(auth, form.email, form.password);
+      console.log("Sign-in successful!");
+      router.push("/(tabs)/events");
+    } catch (err) {
+      console.error("Error during sign-in:", err);
+      setError("Invalid email or password. Please try again.");
+    }
+
+    setIsSubmitting(false);
+  };
+
+  useEffect(() => {
+    const checkUser = async () => {
+      const auth = getAuth();
+      auth.onAuthStateChanged((user) => {
+        if (user) {
+          console.log("User already logged in:", user);
+          router.push("/(tabs)/events");
+        }
+      });
+    };
+
+    checkUser();
+  }, [router]);
 
   return (
-    <SafeAreaView className="bg-cardBg h-full">
-      <ScrollView>
-        <View className="w-full justify-center min-h-[72vh] px-8 py-8">
+    <SafeAreaView style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollView}>
+        <View style={styles.formContainer}>
           <Image
             source={images.logo}
             resizeMode="contain"
-            className="w-[115px] h-[115px] self-center"
+            style={styles.logo}
           />
-          <Text className="text-2xl text-center color-text text-bold mt-4">
-            Sign In
-          </Text>
+          <Text style={styles.title}>Sign In</Text>
+
           <FormField
             title="Email"
+            placeholder="Email"
             value={form.email}
-            handleChangeText={(e: string) => setform({ ...form, email: e })}
-            otherStyles="mt-7"
+            handleChangeText={(e: string) => setForm({ ...form, email: e })}
             keyboardType="email-address"
           />
+
           <FormField
             title="Password"
+            placeholder="Password"
             value={form.password}
-            handleChangeText={(e: string) => setform({ ...form, password: e })}
-            otherStyles="mt-3"
+            handleChangeText={(e: string) => setForm({ ...form, password: e })}
+            secureTextEntry={true} // Hide password input
           />
-          <View className="flex justify-center mx-5">
+
+          {error && <Text style={styles.errorText}>{error}</Text>}
+
+          <View style={styles.forgotPasswordContainer}>
             <Link
-              href="/sign-up"
-              className="text-base font-psemibold text-right text-secondary"
+              href="/(auth)/forgot-password"
+              style={styles.forgotPasswordLink}
             >
               Forgot password?
             </Link>
@@ -49,17 +87,13 @@ const SignIn = () => {
           <CustomButton
             title="Sign In"
             handlePress={submit}
-            containerStyles="mx-3 mt-12"
+            containerStyles={styles.buttonContainer}
             isLoading={isSubmitting}
           />
-          <View className="pt-3 flex-row gap-2 justify-start mx-3">
-            <Text className="text-base color-text font-pregular">
-              Don't have an account?
-            </Text>
-            <Link
-              href="/sign-up"
-              className="text-base font-psemibold text-secondary"
-            >
+
+          <View style={styles.signupContainer}>
+            <Text style={styles.signupText}>Don't have an account?</Text>
+            <Link href="/(auth)/sign-up" style={styles.signupLink}>
               Sign Up
             </Link>
           </View>
@@ -68,5 +102,69 @@ const SignIn = () => {
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginTop: 40,
+  },
+  scrollView: {
+    paddingBottom: 30,
+  },
+  formContainer: {
+    justifyContent: "center",
+    paddingHorizontal: 24,
+    paddingVertical: 16,
+  },
+  logo: {
+    width: 115,
+    height: 115,
+    alignSelf: "center",
+  },
+  title: {
+    fontSize: 24,
+    fontFamily: "Lexend-SemiBold",
+    textAlign: "center",
+    marginTop: 16,
+  },
+  errorText: {
+    fontFamily: "Lexend-Light",
+    color: colors.red_text,
+    textAlign: "center",
+    marginTop: 8,
+  },
+  forgotPasswordContainer: {
+    justifyContent: "center",
+    marginHorizontal: 16,
+    marginTop: 8,
+  },
+  forgotPasswordLink: {
+    textAlign: "right",
+    fontSize: 14,
+    color: colors.fitness_tab,
+    fontFamily: "Lexend-Regular",
+  },
+  buttonContainer: {
+    marginTop: 30,
+    marginHorizontal: 10,
+  },
+  signupContainer: {
+    flexDirection: "row",
+    gap: 8,
+    justifyContent: "flex-start",
+    marginTop: 16,
+    marginHorizontal: 10,
+  },
+  signupText: {
+    fontSize: 14,
+    color: colors.text,
+    fontFamily: "Lexend-Regular",
+  },
+  signupLink: {
+    fontSize: 14,
+    color: colors.fitness_tab,
+    fontFamily: "Lexend-Medium",
+  },
+});
 
 export default SignIn;
