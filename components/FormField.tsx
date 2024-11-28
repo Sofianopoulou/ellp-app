@@ -5,15 +5,15 @@ import {
   StyleSheet,
   TextInputProps,
   TouchableOpacity,
-  Image,
 } from "react-native";
 import React, { useState } from "react";
-import Ionicons from "react-native-vector-icons/Ionicons";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import colors from "@/assets/colors/colors";
 
 interface FormFieldProps extends TextInputProps {
   title: string;
   value: string;
-  placeholder: string;
+  placeholder?: string;
   handleChangeText: (text: string) => void;
   otherStyles?: object;
 }
@@ -28,27 +28,31 @@ const FormField: React.FC<FormFieldProps> = ({
 }) => {
   const [showPassword, setShowPassword] = useState(false);
 
-  return (
-    <View className={`space-y-1 m-2 ${otherStyles}`}>
-      <Text className="text-base text-gray-400 font-pmedium">{title}</Text>
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevState) => !prevState); // Toggle password visibility
+  };
 
-      <View className="w-full h-12 px-4 bg-black-100 rounded-2xl border-2 border-gray-400 focus:border-secondary flex flex-row items-center">
+  return (
+    <View style={[styles.container, otherStyles]}>
+      <Text style={styles.label}>{title}</Text>
+
+      <View style={styles.inputContainer}>
         <TextInput
-          className="flex-1 color-text font-psemibold text-base"
+          style={styles.input}
           value={value}
           placeholder={placeholder}
           placeholderTextColor="#7B7B8B"
           onChangeText={handleChangeText}
-          secureTextEntry={title === "Password" && !showPassword}
+          secureTextEntry={title === "Password" && !showPassword} // Toggle secureTextEntry based on showPassword state
           {...props}
         />
 
         {title === "Password" && (
-          <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+          <TouchableOpacity onPress={togglePasswordVisibility}>
             <Ionicons
-              name={showPassword ? "eye-off" : "eye"} // Icons for showing/hiding password
+              name={showPassword ? "eye-off" : "eye"}
               size={24}
-              color="#7B7B8B"
+              color={colors.black}
             />
           </TouchableOpacity>
         )}
@@ -62,15 +66,25 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   label: {
-    fontSize: 16,
-    color: "#333333",
+    fontSize: 12,
+    color: colors.text,
     marginBottom: 5,
+    fontFamily: "Lexend-Light",
+  },
+  inputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: colors.grey_border,
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    height: 50,
   },
   input: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    padding: 10,
-    borderRadius: 5,
+    flex: 1,
+    fontSize: 16,
+    color: colors.black,
+    paddingVertical: 10,
   },
 });
 

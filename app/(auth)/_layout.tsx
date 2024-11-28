@@ -1,29 +1,35 @@
-import { Stack } from 'expo-router'
-import { StatusBar } from 'expo-status-bar'
-import React from 'react'
-import {View, Text} from 'react-native'
-
+import { Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import React from "react";
+import { View, Text } from "react-native";
 
 const AuthLayout = () => {
-    return (
-        <>
-            <Stack>
-            <Stack.Screen
-            name="sign-in"
-            options = {{
-                headerShown: false
-            }}/>
-            <Stack.Screen
-            name="sign-up"
-            options = {{
-                headerShown: false
-            }}/>
+  return (
+    <>
+      <Stack>
+        <Stack.Screen
+          name="sign-in"
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="sign-up"
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="forgot-password"
+          options={{
+            headerShown: false,
+          }}
+        />
+      </Stack>
 
-            </Stack>
+      <StatusBar backgroundColor="#161622" style="light" />
+    </>
+  );
+};
 
-            <StatusBar backgroundColor = "#161622" style="light"/>
-        </>
-    )
-}
-
-export default AuthLayout
+export default AuthLayout;

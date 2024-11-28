@@ -4,6 +4,12 @@ import { useEffect, useState } from "react";
 import { ActivityIndicator, View } from "react-native";
 import colors from "@/assets/colors/colors";
 import Onboarding from "@/components/Onboarding/Onboarding";
+import {
+  getAuth,
+  onAuthStateChanged,
+  setPersistence,
+  browserLocalPersistence,
+} from "firebase/auth";
 
 const Loading = () => (
   <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -14,12 +20,12 @@ const Loading = () => (
 export default function InitialScreen() {
   const [loading, setLoading] = useState(true);
   const [viewedOnboarding, setViewedOnboarding] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const checkOnboarding = async () => {
     try {
-      const value = await AsyncStorage.getItem("@viewedOnboarding");
-      //console.log("AsyncStorage value for @viewedOnboarding:", value);
-      if (value !== null) setViewedOnboarding(true);
+      const onboardingValue = await AsyncStorage.getItem("@viewedOnboarding");
+      if (onboardingValue !== null) setViewedOnboarding(true);
     } catch (err) {
       console.log("Error @checkOnboarding:", err);
     } finally {
@@ -27,14 +33,49 @@ export default function InitialScreen() {
     }
   };
 
+  // const checkLogin = async () => {
+  //   try {
+  //     const loginStatus = await AsyncStorage.getItem("@isLoggedIn");
+  //     if (loginStatus !== null) setIsLoggedIn(true);
+  //   } catch (err) {
+  //     console.log("Error @checkLogin:", err);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+  // Check the user's login status using Firebase Authentication
+  const checkLogin = () => {
+    const auth = getAuth();
+    try {
+      // Listen for authentication state changes
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          // User is signed in
+          setIsLoggedIn(true);
+        } else {
+          // User is not signed in
+          setIsLoggedIn(false);
+        }
+      });
+    } catch (err) {
+      console.log("Error @checkLogin:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     checkOnboarding();
+    // checkLogin();
   }, []);
 
   return loading ? (
     <Loading />
-  ) : viewedOnboarding ? (
+  ) : isLoggedIn ? (
     <Redirect href="/(tabs)/events" />
+  ) : viewedOnboarding ? (
+    <Redirect href="/(auth)/sign-in" />
   ) : (
     <Onboarding />
   );

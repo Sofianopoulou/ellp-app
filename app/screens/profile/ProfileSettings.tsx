@@ -10,13 +10,18 @@ import {
   Platform,
 } from "react-native";
 import colors from "@/assets/colors/colors";
-
+import SimpleAlert from "@/components/SimpleAlert";
 import Feather from "@expo/vector-icons/Feather";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import LargeButtonComponent from "@/components/LargeButtonComponent";
 import { useState } from "react";
 import CustomAlert from "@/components/CustomAlert";
+import { useRouter } from "expo-router";
+
+import { auth, database } from "@/firebaseConfig";
+import { deleteUser } from "firebase/auth";
+import { ref, remove } from "firebase/database";
 
 const ProfileSettings = () => {
   const [placeholders, setPlaceholders] = useState({
@@ -27,19 +32,58 @@ const ProfileSettings = () => {
   });
 
   const [isAlertVisible, setAlertVisible] = useState(false);
-  const [alertTitle, setAlertTitle] = useState("Delete Profile"); // Default title
+  const [alertTitle, setAlertTitle] = useState("Delete Profile");
   const [alertMessage, setAlertMessage] = useState(
     "Are you sure you want to delete your profile? This action cannot be undone."
   );
+
+  const [simpleAlertVisible, setSimpleAlertVisible] = useState(false);
+  const [simpleAlertContent, setSimpleAlertContent] = useState({
+    title: "",
+    message: "",
+  });
+
+  const router = useRouter();
 
   const handleDeleteProfile = () => {
     setAlertVisible(true);
   };
 
-  const handleConfirmDelete = () => {
-    console.log("Profile Deleted");
-    setAlertVisible(false);
-    // delete logic here
+  const handleConfirmDelete = async () => {
+    const user = auth.currentUser;
+
+    if (user) {
+      try {
+        // Remove user data from the Realtime Database
+        const userRef = ref(database, `users/${user.uid}`);
+        await remove(userRef);
+        // Delete the user from Firebase Authentication
+        await deleteUser(user);
+
+        // Alert.alert("Success", "Your profile has been successfully deleted.");
+        setSimpleAlertContent({
+          title: "Success",
+          message: "Your profile has been successfully deleted.",
+        });
+        setSimpleAlertVisible(true);
+
+        setTimeout(() => {
+          router.replace("/sign-in");
+        }, 2000);
+      } catch (error: any) {
+        console.error("Error deleting user:", error);
+
+        setSimpleAlertContent({
+          title: "Error",
+          message:
+            "There was an issue deleting your account. Please log out and log in again to perform this action.",
+        });
+
+        setSimpleAlertVisible(true);
+      }
+    } else {
+      Alert.alert("Error", "No user is currently logged in.");
+    }
   };
 
   return (
@@ -157,6 +201,13 @@ const ProfileSettings = () => {
             />
           </TouchableOpacity>
         </View>
+
+        <SimpleAlert
+          visible={simpleAlertVisible}
+          onClose={() => setAlertVisible(false)}
+          title={simpleAlertContent.title}
+          message={simpleAlertContent.message}
+        />
       </ScrollView>
     </KeyboardAvoidingView>
   );
@@ -169,7 +220,7 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     padding: 20,
-    paddingBottom: 40, // Add bottom padding for extra scroll space
+    paddingBottom: 40,
     flexGrow: 1,
   },
   profileImageContainer: {
