@@ -2,6 +2,8 @@ import { View, StyleSheet, FlatList } from "react-native";
 import images from "@/assets/images";
 import DiscountCard from "@/components/DiscountCard";
 import DiscountProfileCard from "@/components/DiscountProfileCard";
+import FilteringTabs from "@/components/FilteringTabs";
+import { useState } from "react";
 
 const discountData = [
   {
@@ -10,6 +12,7 @@ const discountData = [
     location: "Las Palmas",
     title: "3RJ SurfTime",
     discount: "10% OFF",
+    category: "Adventure",
   },
   {
     id: "2",
@@ -17,6 +20,7 @@ const discountData = [
     location: "Las Palmas",
     title: "Surf School",
     discount: "15% OFF",
+    category: "Fitness",
   },
 ];
 
@@ -27,6 +31,7 @@ const discountProfileData = [
     location: "Las Palmas",
     title: "3RJ SurfTime",
     discount: "10% OFF",
+    category: "Fitness",
   },
   {
     id: "2",
@@ -34,12 +39,26 @@ const discountProfileData = [
     location: "Las Palmas",
     title: "Surf School",
     discount: "15% OFF",
+    categpry: "Fitness",
   },
 ];
 
 const Discounts = () => {
+  // State to track the selected category
+  const [selectedCategory, setSelectedCategory] = useState("All");
+
+  // Function to filter the data based on the selected category
+  const filteredData = discountData.filter((item) => {
+    if (selectedCategory === "All") return true;
+    return item.category === selectedCategory;
+  });
+
   return (
     <View style={styles.container}>
+      <FilteringTabs
+        selectedCategory={selectedCategory}
+        onCategoryChange={(category) => setSelectedCategory(category)}
+      />
       <FlatList
         showsVerticalScrollIndicator={false}
         data={discountData}
