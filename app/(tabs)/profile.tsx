@@ -10,6 +10,7 @@ import colors from "@/assets/colors/colors";
 
 import { NativeStackNavigationOptions } from "@react-navigation/native-stack";
 import ProfileSettings from "../screens/profile/ProfileSettings";
+import FavouriteDiscounts from "../screens/profile/FavouriteDiscounts";
 
 const ProfileStack = createNativeStackNavigator();
 
@@ -34,56 +35,61 @@ export default function ProfileStackScreen() {
       <ProfileStack.Screen
         name="Membership"
         component={Membership}
-        options={({ navigation }): NativeStackNavigationOptions => ({
+        options={{
           headerShown: true,
-          headerLeft: () => <BackButton navigation={navigation} />,
-          headerTitle: "",
+          headerBackTitle: "Back",
           headerShadowVisible: false,
-        })}
+        }}
       />
 
       <ProfileStack.Screen
         name="JoinUs"
         component={JoinUs}
-        options={({ navigation }): NativeStackNavigationOptions => ({
+        options={{
           headerShown: true,
-          headerLeft: () => <BackButton navigation={navigation} />,
-          headerTitle: "",
+          headerBackTitle: "Back",
           headerShadowVisible: false,
-        })}
+        }}
       />
 
       <ProfileStack.Screen
         name="PaymentScreen"
         component={PaymentScreen}
-        options={({ navigation }) => ({
+        options={{
           headerShown: true,
-          headerLeft: () => <BackButton navigation={navigation} />,
-          headerTitle: "",
+          headerBackTitle: "Back",
           headerShadowVisible: false,
-        })}
+        }}
+      />
+
+      <ProfileStack.Screen
+        name="FavouriteDiscounts"
+        component={FavouriteDiscounts} // Ensure this component exists
+        options={{
+          headerShown: true,
+          headerBackTitle: "Back",
+          headerShadowVisible: false,
+        }}
       />
 
       <ProfileStack.Screen
         name="InfoPage"
         component={InfoPage}
-        options={({ navigation }) => ({
+        options={{
           headerShown: true,
-          headerLeft: () => <BackButton navigation={navigation} />,
-          headerTitle: "",
+          headerBackTitle: "Back",
           headerShadowVisible: false,
-        })}
+        }}
       />
 
       <ProfileStack.Screen
         name="ProfileSettings"
         component={ProfileSettings}
-        options={({ navigation }) => ({
+        options={{
           headerShown: true,
-          headerLeft: () => <BackButton navigation={navigation} />,
-          headerTitle: "",
+          headerBackTitle: "Back",
           headerShadowVisible: false,
-        })}
+        }}
       />
     </ProfileStack.Navigator>
   );

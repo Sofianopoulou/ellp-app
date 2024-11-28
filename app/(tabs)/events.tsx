@@ -108,7 +108,7 @@ const Events = () => {
               <ScrollView contentContainerStyle={styles.modalScrollContent}>
                 {/* Event Image */}
                 <ImageBackground
-                  source={selectedEvent?.imageUrl || ""}
+                  source={selectedEvent?.imageUrl || null}
                   style={styles.eventImage}
                 />
 

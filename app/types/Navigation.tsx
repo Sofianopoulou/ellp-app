@@ -8,6 +8,7 @@ export type RootStackParamList = {
   InfoPage: undefined;
   ProfileSettings: undefined;
   SignIn: undefined;
+  FavouriteDiscounts: undefined;
 };
 
 export type ProfileScreenProps = StackScreenProps<
@@ -30,5 +31,10 @@ export type InfoPageScreenProps = StackScreenProps<
 export type SettingsPageScreenProps = StackScreenProps<
   RootStackParamList,
   "ProfileSettings"
+>;
+
+export type FavouritesPageScreenProps = StackScreenProps<
+  RootStackParamList,
+  "FavouriteDiscounts"
 >;
 export type SignInScreenProps = StackScreenProps<RootStackParamList, "SignIn">;

@@ -17,6 +17,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState } from "react";
 import CustomAlert from "@/components/CustomAlert";
 import { useRouter } from "expo-router";
+import FavouriteDiscounts from "./FavouriteDiscounts";
 
 type ProfileScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -112,7 +113,7 @@ const Profile = () => {
       <MenuItem
         icon={<Feather name="heart" size={24} color={colors.secondary} />}
         text="Favorites"
-        onPress={() => console.log("Favorites pressed")}
+        onPress={() => navigation.navigate("FavouriteDiscounts")}
       />
 
       <View style={{ height: 1, backgroundColor: colors.grey_background }} />

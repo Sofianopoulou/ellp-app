@@ -89,21 +89,6 @@ const Discounts = () => {
           />
         )}
       />
-      <FlatList
-        data={discountProfileData}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <DiscountProfileCard
-            imageUrl={item.imageUrl}
-            location={item.location}
-            title={item.title}
-            discount={item.discount}
-            onPress={() => {
-              console.log(`Navigating to details for ${item.title}`);
-            }}
-          />
-        )}
-      />
     </View>
   );
 };
