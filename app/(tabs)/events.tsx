@@ -11,11 +11,25 @@ import {
 
 import React, { useState } from "react";
 import images from "@/assets/images";
-import { MaterialIcons, FontAwesome } from "@expo/vector-icons"; // Importing icons from @expo/vector-icons
-
+import { MaterialIcons, FontAwesome } from "@expo/vector-icons";
 import EventCard from "@/components/EventCard";
 
-const discountData = [
+interface EventData {
+  id: string;
+  imageUrl: string;
+  location: string;
+  date: string;
+  description: string;
+  title: string;
+  startTime: string;
+  endTime?: string;
+  discount?: string;
+  price?: string;
+  priceMembers?: string;
+  contact?: string;
+}
+
+const eventsData = [
   {
     id: "1",
     imageUrl: images.example_event,
@@ -23,33 +37,39 @@ const discountData = [
     date: "12 Sep, 2024",
     description: "You cannot miss it!",
     title: "Las Palmas Tour",
-    discount: "10% OFF",
+    price: "1000",
+    startTime: "10:00 AM",
+    endTime: "12:00 PM",
   },
   {
     id: "2",
-    imageUrl: "./assets/images/event-example.jpg",
+    imageUrl: require("../../assets/images/event-example.jpg"),
     location: "Las Palmas",
     date: "12 Sep, 2024",
     description: "You cannot miss it!",
     title: "Tapas Night",
+    price: "1000",
     discount: "15% OFF",
+    startTime: "6:00 PM",
   },
   {
     id: "3",
-    imageUrl: "./assets/images/event-example.jpg",
+    imageUrl: require("../../assets/images/event-example.jpg"),
     location: "Las Palmas",
     date: "12 Sep, 2024",
     description: "You cannot miss it!",
     title: "Museum day",
+    price: "1000",
+    priceMembers: "900",
     discount: "15% OFF",
   },
 ];
 
 const Events = () => {
-  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [selectedEvent, setSelectedEvent] = useState<EventData | null>(null);
   const [modalVisibility, setModalVisibility] = useState(false);
 
-  const handlePress = (event) => {
+  const handlePress = (event: EventData) => {
     setSelectedEvent(event);
     setModalVisibility(true);
   };
@@ -59,11 +79,10 @@ const Events = () => {
     setSelectedEvent(null);
   };
 
-  const image = images.example_event;
   return (
     <View style={styles.container}>
       <FlatList
-        data={discountData}
+        data={eventsData}
         showsVerticalScrollIndicator={false}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
@@ -79,7 +98,7 @@ const Events = () => {
       />
       <Modal
         animationType="slide"
-        transparent={true}
+        transparent={false}
         visible={modalVisibility}
         onRequestClose={closeModal}
       >
@@ -88,7 +107,10 @@ const Events = () => {
             {selectedEvent && (
               <ScrollView contentContainerStyle={styles.modalScrollContent}>
                 {/* Event Image */}
-                <ImageBackground source={image} style={styles.eventImage} />
+                <ImageBackground
+                  source={selectedEvent?.imageUrl || ""}
+                  style={styles.eventImage}
+                />
 
                 {/* Event Title and Description */}
                 <Text style={styles.modalTitle}>{selectedEvent.title}</Text>
@@ -108,7 +130,12 @@ const Events = () => {
                     <Text style={styles.infoMainText}>
                       {selectedEvent.date}
                     </Text>
-                    <Text style={styles.infoSubText}>{selectedEvent.time}</Text>
+                    <Text style={styles.infoSubText}>
+                      {selectedEvent?.startTime}
+                      {selectedEvent?.endTime
+                        ? ` - ${selectedEvent.endTime}`
+                        : ""}
+                    </Text>
                   </View>
                 </View>
 
@@ -140,7 +167,12 @@ const Events = () => {
                   />
                   <View style={styles.infoText}>
                     <Text style={styles.infoMainText}>
-                      {selectedEvent.price} TODO
+                      {selectedEvent?.price + " euro" || "Free"}
+                    </Text>
+                    <Text style={styles.infoSubText}>
+                      {selectedEvent?.priceMembers
+                        ? selectedEvent?.priceMembers + " euro for memberships"
+                        : "no discount for members"}
                     </Text>
                   </View>
                 </View>
@@ -155,7 +187,7 @@ const Events = () => {
                   />
                   <View style={styles.infoText}>
                     <Text style={styles.infoMainText}>
-                      Contact us n social media
+                      {selectedEvent?.contact || "Find us on social media"}
                     </Text>
                   </View>
                 </View>
@@ -198,7 +230,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 5,
     elevation: 5,
-    maxHeight: "85%",
+    maxHeight: "95%",
   },
   modalScrollContent: {
     alignItems: "center",

@@ -2,6 +2,7 @@ import { View, StyleSheet, FlatList } from "react-native";
 import images from "@/assets/images";
 import DiscountCard from "@/components/DiscountCard";
 import DiscountProfileCard from "@/components/DiscountProfileCard";
+import { useState } from "react";
 
 const discountData = [
   {
@@ -38,6 +39,17 @@ const discountProfileData = [
 ];
 
 const Discounts = () => {
+  const [favorites, setFavorites] = useState<string[]>([]); // List of favorite IDs
+
+  const handleToggleFavorite = (id: string, isFavorite: boolean) => {
+    setFavorites(
+      (prevFavorites) =>
+        isFavorite
+          ? [...prevFavorites, id] // Add to favorites
+          : prevFavorites.filter((favId) => favId !== id) // Remove from favorites
+    );
+  };
+
   return (
     <View style={styles.container}>
       <FlatList
@@ -53,6 +65,9 @@ const Discounts = () => {
             onPress={() => {
               console.log(`Navigating to details for ${item.title}`);
             }}
+            onToggleFavorite={(isFavorite) =>
+              handleToggleFavorite(item.id, isFavorite)
+            }
           />
         )}
       />
