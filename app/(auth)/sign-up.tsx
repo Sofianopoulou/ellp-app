@@ -77,6 +77,12 @@ const SignUp = () => {
           name: form.name,
           email: form.email,
           phone: form.phone,
+          profileImage: "",
+          membership: {
+            membershipStatus: "non-member",
+            hasMembership: false,
+            expiryDate: "",
+          },
         });
 
         // Initialize leaderboard data
