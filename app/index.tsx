@@ -10,12 +10,7 @@ import {
   setPersistence,
   browserLocalPersistence,
 } from "firebase/auth";
-
-const Loading = () => (
-  <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-    <ActivityIndicator size="large" color={colors.primary} />
-  </View>
-);
+import Loading from "@/components/Loading";
 
 export default function InitialScreen() {
   const [loading, setLoading] = useState(true);
