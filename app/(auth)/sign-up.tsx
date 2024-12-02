@@ -2,7 +2,7 @@ import { useState } from "react";
 import { View, Text, ScrollView, StyleSheet, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Link, useRouter } from "expo-router";
-import { auth, database } from "@/firebaseConfig";
+import { auth, realtimeDb } from "@/firebaseConfig";
 import { createUserWithEmailAndPassword } from "@firebase/auth";
 import { ref, set } from "@firebase/database";
 
@@ -73,14 +73,14 @@ const SignUp = () => {
       // Store additional user details in Firebase Realtime Database
       if (userCredential.user) {
         const userId = userCredential.user.uid;
-        await set(ref(database, `users/${userId}`), {
+        await set(ref(realtimeDb, `users/${userId}`), {
           name: form.name,
           email: form.email,
           phone: form.phone,
         });
 
         // Initialize leaderboard data
-        await set(ref(database, `users/${userId}/leaderboard`), {
+        await set(ref(realtimeDb, `users/${userId}/leaderboard`), {
           totalSteps: 0,
         });
 

@@ -13,6 +13,7 @@ import React, { useState } from "react";
 import images from "@/assets/images";
 import { MaterialIcons, FontAwesome } from "@expo/vector-icons";
 import EventCard from "@/components/EventCard";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 interface EventData {
   id: string;
@@ -81,129 +82,132 @@ const Events = () => {
 
   return (
     <View style={styles.container}>
-      <FlatList
-        data={eventsData}
-        showsVerticalScrollIndicator={false}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <EventCard
-            imageUrl={item.imageUrl}
-            location={item.location}
-            description={item.description}
-            date={item.date}
-            title={item.title}
-            onPress={() => handlePress(item)}
-          />
-        )}
-      />
-      <Modal
-        animationType="slide"
-        transparent={false}
-        visible={modalVisibility}
-        onRequestClose={closeModal}
-      >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContent}>
-            {selectedEvent && (
-              <ScrollView contentContainerStyle={styles.modalScrollContent}>
-                {/* Event Image */}
-                <ImageBackground
-                  source={selectedEvent?.imageUrl || null}
-                  style={styles.eventImage}
-                />
-
-                {/* Event Title and Description */}
-                <Text style={styles.modalTitle}>{selectedEvent.title}</Text>
-                <Text style={styles.modalDescription}>
-                  {selectedEvent.description}
-                </Text>
-
-                {/* Event Date and Time */}
-                <View style={styles.modalInfo}>
-                  <MaterialIcons
-                    name="event"
-                    size={24}
-                    color="#4B9CD3"
-                    style={styles.icon}
+      <SafeAreaView>
+        <FlatList
+          data={eventsData}
+          showsVerticalScrollIndicator={false}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <EventCard
+              imageUrl={item.imageUrl}
+              location={item.location}
+              description={item.description}
+              date={item.date}
+              title={item.title}
+              onPress={() => handlePress(item)}
+            />
+          )}
+        />
+        <Modal
+          animationType="slide"
+          transparent={false}
+          visible={modalVisibility}
+          onRequestClose={closeModal}
+        >
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalContent}>
+              {selectedEvent && (
+                <ScrollView contentContainerStyle={styles.modalScrollContent}>
+                  {/* Event Image */}
+                  <ImageBackground
+                    source={selectedEvent?.imageUrl || null}
+                    style={styles.eventImage}
                   />
-                  <View style={styles.infoText}>
-                    <Text style={styles.infoMainText}>
-                      {selectedEvent.date}
-                    </Text>
-                    <Text style={styles.infoSubText}>
-                      {selectedEvent?.startTime}
-                      {selectedEvent?.endTime
-                        ? ` - ${selectedEvent.endTime}`
-                        : ""}
-                    </Text>
-                  </View>
-                </View>
 
-                {/* Event Location */}
-                <View style={styles.modalInfo}>
-                  <MaterialIcons
-                    name="location-on"
-                    size={24}
-                    color="#4B9CD3"
-                    style={styles.icon}
-                  />
-                  <View style={styles.infoText}>
-                    <Text style={styles.infoMainText}>
-                      {selectedEvent.location}
-                    </Text>
-                    <Text style={styles.infoSubText}>
-                      123 Main Street, NY 10001
-                    </Text>
-                  </View>
-                </View>
+                  {/* Event Title and Description */}
+                  <Text style={styles.modalTitle}>{selectedEvent.title}</Text>
+                  <Text style={styles.modalDescription}>
+                    {selectedEvent.description}
+                  </Text>
 
-                {/* Event Price */}
-                <View style={styles.modalInfo}>
-                  <MaterialIcons
-                    name="euro"
-                    size={24}
-                    color="#4B9CD3"
-                    style={styles.icon}
-                  />
-                  <View style={styles.infoText}>
-                    <Text style={styles.infoMainText}>
-                      {selectedEvent?.price + " euro" || "Free"}
-                    </Text>
-                    <Text style={styles.infoSubText}>
-                      {selectedEvent?.priceMembers
-                        ? selectedEvent?.priceMembers + " euro for memberships"
-                        : "no discount for members"}
-                    </Text>
+                  {/* Event Date and Time */}
+                  <View style={styles.modalInfo}>
+                    <MaterialIcons
+                      name="event"
+                      size={24}
+                      color="#4B9CD3"
+                      style={styles.icon}
+                    />
+                    <View style={styles.infoText}>
+                      <Text style={styles.infoMainText}>
+                        {selectedEvent.date}
+                      </Text>
+                      <Text style={styles.infoSubText}>
+                        {selectedEvent?.startTime}
+                        {selectedEvent?.endTime
+                          ? ` - ${selectedEvent.endTime}`
+                          : ""}
+                      </Text>
+                    </View>
                   </View>
-                </View>
 
-                {/* Evwnt contact info */}
-                <View style={styles.modalInfo}>
-                  <MaterialIcons
-                    name="info"
-                    size={24}
-                    color="#4B9CD3"
-                    style={styles.icon}
-                  />
-                  <View style={styles.infoText}>
-                    <Text style={styles.infoMainText}>
-                      {selectedEvent?.contact || "Find us on social media"}
-                    </Text>
+                  {/* Event Location */}
+                  <View style={styles.modalInfo}>
+                    <MaterialIcons
+                      name="location-on"
+                      size={24}
+                      color="#4B9CD3"
+                      style={styles.icon}
+                    />
+                    <View style={styles.infoText}>
+                      <Text style={styles.infoMainText}>
+                        {selectedEvent.location}
+                      </Text>
+                      <Text style={styles.infoSubText}>
+                        123 Main Street, NY 10001
+                      </Text>
+                    </View>
                   </View>
-                </View>
 
-                {/* Close Button */}
-                <TouchableOpacity
-                  style={styles.closeButton}
-                  onPress={closeModal}
-                >
-                  <Text style={styles.closeButtonText}>Close</Text>
-                </TouchableOpacity>
-              </ScrollView>
-            )}
+                  {/* Event Price */}
+                  <View style={styles.modalInfo}>
+                    <MaterialIcons
+                      name="euro"
+                      size={24}
+                      color="#4B9CD3"
+                      style={styles.icon}
+                    />
+                    <View style={styles.infoText}>
+                      <Text style={styles.infoMainText}>
+                        {selectedEvent?.price + " euro" || "Free"}
+                      </Text>
+                      <Text style={styles.infoSubText}>
+                        {selectedEvent?.priceMembers
+                          ? selectedEvent?.priceMembers +
+                            " euro for memberships"
+                          : "no discount for members"}
+                      </Text>
+                    </View>
+                  </View>
+
+                  {/* Evwnt contact info */}
+                  <View style={styles.modalInfo}>
+                    <MaterialIcons
+                      name="info"
+                      size={24}
+                      color="#4B9CD3"
+                      style={styles.icon}
+                    />
+                    <View style={styles.infoText}>
+                      <Text style={styles.infoMainText}>
+                        {selectedEvent?.contact || "Find us on social media"}
+                      </Text>
+                    </View>
+                  </View>
+
+                  {/* Close Button */}
+                  <TouchableOpacity
+                    style={styles.closeButton}
+                    onPress={closeModal}
+                  >
+                    <Text style={styles.closeButtonText}>Close</Text>
+                  </TouchableOpacity>
+                </ScrollView>
+              )}
+            </View>
           </View>
-        </View>
-      </Modal>
+        </Modal>
+      </SafeAreaView>
     </View>
   );
 };

@@ -8,6 +8,8 @@ import SmallButtonComponent from "../SmallButtonComponent";
 import SkipButton from "./SkipButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Link, useRouter } from "expo-router";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { StatusBar } from "expo-status-bar";
 
 const Onboarding = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -60,34 +62,36 @@ const Onboarding = () => {
 
   return (
     <View>
-      <FlatList
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        pagingEnabled
-        bounces={false}
-        keyExtractor={(item) => item.id}
-        onScroll={Animated.event(
-          [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-          { useNativeDriver: false }
-        )}
-        viewabilityConfig={viewConfig}
-        onViewableItemsChanged={viewableItemChanged}
-        scrollEventThrottle={32}
-        ref={slidesRef}
-        data={slides}
-        renderItem={({ item }) => <OnboardingItem item={item} />}
-      />
-      <Paginator data={slides} scrollX={scrollX} />
-      <View
-        style={{ height: 64, alignItems: "center", justifyContent: "center" }}
-      >
-        <SmallButtonComponent title="Next" onPress={handleNextPress} />
-      </View>
-      {currentIndex < slides.length - 1 && (
-        <View style={{ alignItems: "center" }}>
-          <SkipButton title="Skip" onPress={handleSkipPress} />
+      <SafeAreaView>
+        <FlatList
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          pagingEnabled
+          bounces={false}
+          keyExtractor={(item) => item.id}
+          onScroll={Animated.event(
+            [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+            { useNativeDriver: false }
+          )}
+          viewabilityConfig={viewConfig}
+          onViewableItemsChanged={viewableItemChanged}
+          scrollEventThrottle={32}
+          ref={slidesRef}
+          data={slides}
+          renderItem={({ item }) => <OnboardingItem item={item} />}
+        />
+        <Paginator data={slides} scrollX={scrollX} />
+        <View
+          style={{ height: 64, alignItems: "center", justifyContent: "center" }}
+        >
+          <SmallButtonComponent title="Next" onPress={handleNextPress} />
         </View>
-      )}
+        {currentIndex < slides.length - 1 && (
+          <View style={{ alignItems: "center" }}>
+            <SkipButton title="Skip" onPress={handleSkipPress} />
+          </View>
+        )}
+      </SafeAreaView>
     </View>
   );
 };

@@ -44,7 +44,7 @@ const DiscountCard: React.FC<DiscountCardProps> = ({
     <View style={styles.card}>
       {/* Image Background */}
       <ImageBackground
-        source={image}
+        source={{ uri: imageUrl }}
         style={styles.image}
         imageStyle={{ borderTopLeftRadius: 12, borderTopRightRadius: 12 }}
       />
@@ -112,6 +112,7 @@ const styles = StyleSheet.create({
   },
   location: {
     fontSize: 12,
+    width: "80%",
     color: colors.btm_nav_unselected,
     fontFamily: "Lexend-Regular",
   },

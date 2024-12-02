@@ -6,6 +6,7 @@ import { User } from "@/app/types/User";
 import { useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "@/app/types/Navigation";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { useLayoutEffect } from "react";
 
 type ProfileScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -13,8 +14,15 @@ type ProfileScreenNavigationProp = NativeStackNavigationProp<
 >;
 
 const Membership = () => {
-  const { width, height } = Dimensions.get("window");
   const navigation = useNavigation<ProfileScreenNavigationProp>();
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: "Your membership",
+      headerBackButtonDisplayMode: "minimal",
+    });
+  }, [navigation]);
+  const { width, height } = Dimensions.get("window");
 
   const user: User = {
     name: "Maria Maria",

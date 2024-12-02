@@ -1,78 +1,85 @@
-import { View, StyleSheet, FlatList } from "react-native";
+import { View, StyleSheet, FlatList, ActivityIndicator } from "react-native";
 import images from "@/assets/images";
 import DiscountCard from "@/components/DiscountCard";
 import DiscountProfileCard from "@/components/DiscountProfileCard";
 import FilteringTabs from "@/components/FilteringTabs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import {
+  DocumentData,
+  QuerySnapshot,
+  collection,
+  getDocs,
+  onSnapshot,
+} from "firebase/firestore";
+import { firestoreDb } from "@/firebaseConfig";
 
-const discountData = [
-  {
-    id: "1",
-    imageUrl: images.example_event,
-    location: "Las Palmas",
-    title: "3RJ SurfTime",
-    discount: "10% OFF",
-    category: "Adventure",
-  },
-  {
-    id: "2",
-    imageUrl: "./assets/images/event-example.jpg",
-    location: "Las Palmas",
-    title: "Surf School",
-    discount: "15% OFF",
-    category: "Fitness",
-  },
-];
-
-const discountProfileData = [
-  {
-    id: "1",
-    imageUrl: images.example_event,
-    location: "Las Palmas",
-    title: "3RJ SurfTime",
-    discount: "10% OFF",
-    category: "Fitness",
-  },
-  {
-    id: "2",
-    imageUrl: "./assets/images/event-example.jpg",
-    location: "Las Palmas",
-    title: "Surf School",
-    discount: "15% OFF",
-    categpry: "Fitness",
-  },
-];
+interface Discount {
+  id: string;
+  imageUrl: string;
+  location: string;
+  title: string;
+  discount: string;
+  category: string;
+}
 
 const Discounts = () => {
-  // State to track the selected category
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [loading, setLoading] = useState(true);
+  const [discounts, setDiscounts] = useState<Discount[]>([]);
 
-  // Function to filter the data based on the selected category
-  const filteredData = discountData.filter((item) => {
+  useEffect(() => {
+    const discountsCollection = collection(firestoreDb, "discounts");
+
+    const unsubscribe = onSnapshot(
+      discountsCollection,
+      (snapshot: QuerySnapshot<DocumentData>) => {
+        const discountItems = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        })) as Discount[];
+
+        setDiscounts(discountItems);
+        setLoading(false); // Data loaded
+      },
+      (error) => {
+        console.error("Error fetching discounts: ", error);
+        setLoading(false); // Stop loading even on error
+      }
+    );
+
+    return () => unsubscribe();
+  }, []);
+
+  const filteredData = discounts.filter((discount) => {
     if (selectedCategory === "All") return true;
-    return item.category === selectedCategory;
+    return discount.category === selectedCategory;
   });
 
   const [favorites, setFavorites] = useState<string[]>([]); // List of favorite IDs
 
   const handleToggleFavorite = (id: string, isFavorite: boolean) => {
-    setFavorites(
-      (prevFavorites) =>
-        isFavorite
-          ? [...prevFavorites, id] // Add to favorites
-          : prevFavorites.filter((favId) => favId !== id) // Remove from favorites
+    setFavorites((prevFavorites) =>
+      isFavorite
+        ? [...prevFavorites, id]
+        : prevFavorites.filter((favId) => favId !== id)
     );
   };
 
+  if (loading) {
+    return <ActivityIndicator size="large" color="#000ff" />;
+  }
+
   return (
     <View style={styles.container}>
-      <FilteringTabs
-        selectedCategory={selectedCategory}
-        onCategoryChange={(category) => setSelectedCategory(category)}
-      />
+      <View style={styles.filteringSection}>
+        <FilteringTabs
+          selectedCategory={selectedCategory}
+          onCategoryChange={(category) => setSelectedCategory(category)}
+        />
+      </View>
       <FlatList
         showsVerticalScrollIndicator={false}
-        data={discountData}
+        data={filteredData}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <DiscountCard
@@ -96,7 +103,12 @@ const Discounts = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginTop: 20,
     padding: 16,
+  },
+
+  filteringSection: {
+    height: 105,
   },
 });
 

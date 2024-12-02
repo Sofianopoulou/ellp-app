@@ -13,6 +13,7 @@ import { StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "@/app/types/Navigation";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { useLayoutEffect } from "react";
 
 type ProfileScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -22,6 +23,13 @@ type ProfileScreenNavigationProp = NativeStackNavigationProp<
 const InfoPage = () => {
   const { width, height } = Dimensions.get("window");
   const navigation = useNavigation<ProfileScreenNavigationProp>();
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: "About us",
+      headerBackButtonDisplayMode: "minimal",
+    });
+  }, [navigation]);
 
   return (
     <ScrollView contentContainerStyle={stylesInfo.container}>

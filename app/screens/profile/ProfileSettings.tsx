@@ -15,15 +15,31 @@ import Feather from "@expo/vector-icons/Feather";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import LargeButtonComponent from "@/components/LargeButtonComponent";
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import CustomAlert from "@/components/CustomAlert";
-import { useRouter } from "expo-router";
+import { useNavigation, useRouter } from "expo-router";
 
-import { auth, database } from "@/firebaseConfig";
+import { auth, realtimeDb } from "@/firebaseConfig";
 import { deleteUser } from "firebase/auth";
 import { ref, remove } from "firebase/database";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "@/app/types/Navigation";
+
+type ProfileScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "Profile"
+>;
 
 const ProfileSettings = () => {
+  const navigation = useNavigation<ProfileScreenNavigationProp>();
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: "Edit profile",
+      headerBackButtonDisplayMode: "minimal",
+    });
+  }, [navigation]);
+
   const [placeholders, setPlaceholders] = useState({
     name: "User Name",
     email: "email@address.com",
@@ -55,7 +71,7 @@ const ProfileSettings = () => {
     if (user) {
       try {
         // Remove user data from the Realtime Database
-        const userRef = ref(database, `users/${user.uid}`);
+        const userRef = ref(realtimeDb, `users/${user.uid}`);
         await remove(userRef);
         // Delete the user from Firebase Authentication
         await deleteUser(user);
