@@ -34,7 +34,7 @@ const LargeButton: React.FC<LargeButtonProps> = ({ title, onPress, style }) => {
 const styles = StyleSheet.create({
   button: {
     backgroundColor: colors.tertiary,
-    paddingVertical: 15,
+    paddingVertical: 10,
     paddingHorizontal: 15,
     width: width * 0.8,
     height: height * 0.075,

@@ -1,11 +1,14 @@
 import { View, Text, Image, Dimensions, ScrollView } from "react-native";
 import colors from "@/assets/colors/colors";
-import { IoPerson } from "react-icons/io5";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import MembershipStatus from "@/components/MembershipStatus";
-import { User } from "@/app/types/User";
 import { useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "@/app/types/Navigation";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { useEffect, useState } from "react";
+import { getAuth } from "firebase/auth";
+import { onValue, ref } from "firebase/database";
+import { database } from "@/firebaseConfig";
 import { useLayoutEffect } from "react";
 
 type ProfileScreenNavigationProp = NativeStackNavigationProp<
@@ -23,19 +26,26 @@ const Membership = () => {
     });
   }, [navigation]);
   const { width, height } = Dimensions.get("window");
+  const [userData, setUserData] = useState<any>(null);
 
-  const user: User = {
-    name: "Maria Maria",
-    email: "mariamaria@gmail.com",
-    phone: "+30 6946272687",
-    profilePicture:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMdBuvbsYu7WYAAUY2AqSQRGNESsYdkucDkQ&s",
-    membershipStatus: "non-member",
-    hasMembership: false,
-    dateofPurchase: "28th of August 2024",
-    expiryDate: "28th of August 2025",
-    lastLogin: "28th of August 2021",
-  };
+  useEffect(() => {
+    const auth = getAuth();
+    const currentUser = auth.currentUser;
+
+    if (currentUser) {
+      const userRef = ref(database, `users/${currentUser.uid}`);
+      const unsubscribe = onValue(userRef, (snapshot) => {
+        if (snapshot.exists()) {
+          setUserData(snapshot.val());
+        } else {
+          setUserData(null);
+        }
+      });
+
+      // Clean up listener when the component unmounts
+      return () => unsubscribe();
+    }
+  }, []);
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
@@ -60,20 +70,22 @@ const Membership = () => {
               borderColor: colors.fitness_tab,
             }}
           >
-            {user.profilePicture ? (
+            {userData?.profilepicture ? (
               <Image
-                source={{ uri: user.profilePicture }}
+                source={{ uri: userData?.profilepicture }}
                 style={{ width: "100%", height: "100%", borderRadius: 50 }}
                 resizeMode="cover"
               />
             ) : (
-              <IoPerson size={50} />
+              <Ionicons name="person" size={50} color={colors.text} />
             )}
           </View>
           <Text style={{ fontFamily: "Lexend-Medium", marginTop: 10 }}>
-            {user.name}
+            {userData?.name}
           </Text>
-          <MembershipStatus status={user.membershipStatus} />
+          <MembershipStatus
+            status={userData?.membership?.membershipStatus || "non-member"}
+          />
         </View>
 
         <View style={{ width: width * 0.8 }}>
@@ -88,14 +100,16 @@ const Membership = () => {
               Membership
             </Text>
             <Text style={{ fontFamily: "Lexend-Light", color: colors.text }}>
-              {user.hasMembership ? "ELLP Membership" : "Not a member"}
+              {userData?.membership.hasMembership
+                ? "ELLP Membership"
+                : "Not a member"}
             </Text>
           </View>
 
           <View
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
-            {user.hasMembership ? (
+            {userData?.membership.hasMembership ? (
               <>
                 <Text
                   style={{ fontFamily: "Lexend-Regular", color: colors.text }}
@@ -105,7 +119,7 @@ const Membership = () => {
                 <Text
                   style={{ fontFamily: "Lexend-Light", color: colors.text }}
                 >
-                  {user.expiryDate}
+                  {userData?.membership.expiryDate}
                 </Text>
               </>
             ) : (
@@ -146,7 +160,7 @@ const Membership = () => {
             paddingHorizontal: 20,
           }}
         >
-          {user.hasMembership
+          {userData?.membership.hasMembership
             ? "Simply present this screen to unlock your exclusive discounts at participating locations."
             : "By purchasing an ELLP membership, you'll unlock exclusive discounts to events and local spots, along with the best perks on the island."}
         </Text>

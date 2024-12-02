@@ -1,7 +1,5 @@
-import MediumButtonComponent from "@/components/MediumButtonComponent";
 import { View, Text } from "react-native";
 import colors from "@/assets/colors/colors";
-import MenuItem from "@/components/MenuItem";
 
 import Feather from "@expo/vector-icons/Feather";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -11,12 +9,18 @@ import { useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "@/app/types/Navigation";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import SmallButtonComponent from "@/components/SmallButtonComponent";
+import MediumButtonComponent from "@/components/MediumButtonComponent";
+import MenuItem from "@/components/MenuItem";
 
 import { getAuth, signOut } from "firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CustomAlert from "@/components/CustomAlert";
 import { useRouter } from "expo-router";
+import { onValue, ref } from "firebase/database";
+import { realtimeDb } from "@/firebaseConfig";
+import Loading from "@/components/Loading";
+import { fetchUserData } from "@/utils/firebaseUtils";
 import FavouriteDiscounts from "./FavouriteDiscounts";
 
 type ProfileScreenNavigationProp = NativeStackNavigationProp<
@@ -26,13 +30,34 @@ type ProfileScreenNavigationProp = NativeStackNavigationProp<
 
 const Profile = () => {
   const [isAlertVisible, setAlertVisible] = useState(false);
-  const [alertTitle, setAlertTitle] = useState("Logout"); // Default title
-  const [alertMessage, setAlertMessage] = useState(
-    "Are you sure you want to logout? "
-  );
-  const router = useRouter(); // Hook to navigate programmatically
+  const [userData, setUserData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
+  const router = useRouter();
   const navigation = useNavigation<ProfileScreenNavigationProp>();
+
+  useEffect(() => {
+    const auth = getAuth();
+    const currentUser = auth.currentUser;
+
+    if (currentUser) {
+      const userRef = ref(realtimeDb, `users/${currentUser.uid}`);
+      const unsubscribe = onValue(userRef, (snapshot) => {
+        if (snapshot.exists()) {
+          setUserData(snapshot.val());
+          setLoading(false);
+        } else {
+          setUserData(null);
+          setLoading(false);
+        }
+      });
+
+      // Clean up listener when the component unmounts
+      return () => unsubscribe();
+    } else {
+      setLoading(false);
+    }
+  }, []);
 
   const clearOnboarding = async () => {
     try {
@@ -52,13 +77,16 @@ const Profile = () => {
       await signOut(auth); // Sign out the user from Firebase
       console.log("Logged Out");
 
-      // Navigate the user to the login screen
       router.push("/(auth)/sign-in");
     } catch (error) {
       console.log("Error during logout:", error);
     }
     setAlertVisible(false);
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <View
@@ -84,9 +112,11 @@ const Profile = () => {
           <Ionicons name="person-sharp" size={50} />
         </View>
         <View style={{ alignItems: "center", margin: 20 }}>
-          <Text style={{ fontFamily: "Lexend-Medium" }}>User Name</Text>
+          <Text style={{ fontFamily: "Lexend-Medium" }}>
+            {userData?.name || "Unknown User"}
+          </Text>
           <Text style={{ fontFamily: "Lexend-Light", color: colors.text }}>
-            email@address.com
+            {userData?.email || "Unknown Email"}
           </Text>
         </View>
 
@@ -137,8 +167,8 @@ const Profile = () => {
           visible={isAlertVisible}
           onClose={() => setAlertVisible(false)}
           onAction={handleConfirmLogout}
-          title={alertTitle}
-          message={alertMessage}
+          title="Logout"
+          message="Are you sure you want to logout?"
           actionText="Logout"
         />
       </View>
