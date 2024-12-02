@@ -18,9 +18,10 @@ import { useEffect, useState } from "react";
 import CustomAlert from "@/components/CustomAlert";
 import { useRouter } from "expo-router";
 import { onValue, ref } from "firebase/database";
-import { database } from "@/firebaseConfig";
+import { realtimeDb } from "@/firebaseConfig";
 import Loading from "@/components/Loading";
 import { fetchUserData } from "@/utils/firebaseUtils";
+import FavouriteDiscounts from "./FavouriteDiscounts";
 
 type ProfileScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -40,7 +41,7 @@ const Profile = () => {
     const currentUser = auth.currentUser;
 
     if (currentUser) {
-      const userRef = ref(database, `users/${currentUser.uid}`);
+      const userRef = ref(realtimeDb, `users/${currentUser.uid}`);
       const unsubscribe = onValue(userRef, (snapshot) => {
         if (snapshot.exists()) {
           setUserData(snapshot.val());
@@ -142,7 +143,7 @@ const Profile = () => {
       <MenuItem
         icon={<Feather name="heart" size={24} color={colors.secondary} />}
         text="Favorites"
-        onPress={() => console.log("Favorites pressed")}
+        onPress={() => navigation.navigate("FavouriteDiscounts")}
       />
 
       <View style={{ height: 1, backgroundColor: colors.grey_background }} />

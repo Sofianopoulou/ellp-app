@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { getAuth } from "firebase/auth";
 import { onValue, ref } from "firebase/database";
 import { database } from "@/firebaseConfig";
+import { useLayoutEffect } from "react";
 
 type ProfileScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -16,8 +17,15 @@ type ProfileScreenNavigationProp = NativeStackNavigationProp<
 >;
 
 const Membership = () => {
-  const { width, height } = Dimensions.get("window");
   const navigation = useNavigation<ProfileScreenNavigationProp>();
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: "Your membership",
+      headerBackButtonDisplayMode: "minimal",
+    });
+  }, [navigation]);
+  const { width, height } = Dimensions.get("window");
   const [userData, setUserData] = useState<any>(null);
 
   useEffect(() => {

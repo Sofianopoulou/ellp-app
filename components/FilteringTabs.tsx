@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
     alignItems: "center",
     justifyContent: "center",
+    opacity: 0.6
   },
   tabText: {
     color: colors.white,
@@ -63,7 +64,7 @@ const styles = StyleSheet.create({
     elevation: 4, // Elevation for Android
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 }, // Shadow for iOS
-    shadowOpacity: 0.25,
+    shadowOpacity: 0.85,
     shadowRadius: 3.84,
   },
 });

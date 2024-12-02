@@ -70,7 +70,6 @@ const SignIn = () => {
             placeholder="Password"
             value={form.password}
             handleChangeText={(e: string) => setForm({ ...form, password: e })}
-            secureTextEntry={true} // Hide password input
           />
 
           {error && <Text style={styles.errorText}>{error}</Text>}

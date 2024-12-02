@@ -3,12 +3,26 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { FontAwesome } from "@expo/vector-icons"; // For the heart and discount icon
 import colors from "@/assets/colors/colors";
 
-const DiscountProfileCard = () => {
+interface DiscountProfileCardProps {
+  imageUrl: string;
+  location: string;
+  title: string;
+  discount: string;
+  onPress: () => void;
+}
+
+const DiscountProfileCard: React.FC<DiscountProfileCardProps> = ({
+  imageUrl,
+  location,
+  title,
+  discount,
+  onPress,
+}) => {
   const image = require("../assets/images/event-example.jpg");
   return (
     <View style={styles.card}>
       <Image
-        source={image} // Replace with your image URL
+        source={{ uri: imageUrl }} // Replace with your image URL
         style={styles.image}
       />
       <View style={styles.content}>

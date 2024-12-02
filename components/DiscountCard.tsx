@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -18,6 +18,8 @@ type DiscountCardProps = {
   discount: string;
   category?: string;
   onPress: () => void;
+  onToggleFavorite: (isFavorite: boolean) => void;
+  isFavorite?: boolean;
 };
 
 const DiscountCard: React.FC<DiscountCardProps> = ({
@@ -26,14 +28,23 @@ const DiscountCard: React.FC<DiscountCardProps> = ({
   title,
   discount,
   onPress,
+  onToggleFavorite,
+  isFavorite = false,
 }) => {
   const image = require("../assets/images/event-example.jpg");
+  const [favorite, setFavorite] = useState(isFavorite);
+
+  const toggleFavorite = () => {
+    const newFavoriteState = !favorite;
+    setFavorite(newFavoriteState);
+    onToggleFavorite(newFavoriteState); // Inform parent about the state change
+  };
 
   return (
     <View style={styles.card}>
       {/* Image Background */}
       <ImageBackground
-        source={image}
+        source={{ uri: imageUrl }}
         style={styles.image}
         imageStyle={{ borderTopLeftRadius: 12, borderTopRightRadius: 12 }}
       />
@@ -43,7 +54,13 @@ const DiscountCard: React.FC<DiscountCardProps> = ({
         {/* Location and Heart Icon */}
         <View style={styles.header}>
           <Text style={styles.location}>{location}</Text>
-          <FontAwesome name="heart-o" size={20} color="black" />
+          <TouchableOpacity onPress={() => toggleFavorite()}>
+            <FontAwesome
+              name={favorite ? "heart" : "heart-o"} // Filled or empty heart
+              size={20}
+              color={favorite ? "red" : "black"}
+            />
+          </TouchableOpacity>
         </View>
 
         {/* Title and Discount */}
@@ -95,6 +112,7 @@ const styles = StyleSheet.create({
   },
   location: {
     fontSize: 12,
+    width: "80%",
     color: colors.btm_nav_unselected,
     fontFamily: "Lexend-Regular",
   },
