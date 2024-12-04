@@ -29,6 +29,7 @@ export interface EventData {
   price?: string;
   priceMembers?: string;
   contact?: string;
+  webPageUrl?: string;
 }
 
 const EventsScreen: React.FC = () => {
