@@ -3,7 +3,7 @@ import colors from "@/assets/colors/colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import MembershipStatus from "@/components/MembershipStatus";
 import { useNavigation } from "@react-navigation/native";
-import { RootStackParamList } from "@/app/types/Navigation";
+import RootStackParamList from "@/app/types/Navigation";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
 import { getAuth } from "firebase/auth";

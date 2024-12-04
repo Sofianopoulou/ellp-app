@@ -13,7 +13,7 @@ const firebaseConfig = {
   databaseURL:
     "https://ellp-app-default-rtdb.europe-west1.firebasedatabase.app",
   projectId: "ellp-app",
-  storageBucket: "ellp-app.appspot.com",
+  storageBucket: "ellp-app.firebasestorage.app",
   messagingSenderId: "491263380880",
   appId: "1:491263380880:web:2659998c11480840207715",
   measurementId: "G-Y13VT5G9N1",

@@ -1,6 +1,7 @@
+import { EventData } from "../screens/events/EventsScreen";
 import { StackScreenProps } from "@react-navigation/stack";
 
-export type RootStackParamList = {
+type RootStackParamList = {
   Profile: undefined;
   Membership: undefined;
   JoinUs: undefined;
@@ -9,7 +10,10 @@ export type RootStackParamList = {
   ProfileSettings: undefined;
   SignIn: undefined;
   FavouriteDiscounts: undefined;
+  EventsScreen: undefined; // No parameters for this screen
+  ViewEventScreen: { event: EventData };
 };
+export default RootStackParamList;
 
 export type ProfileScreenProps = StackScreenProps<
   RootStackParamList,
@@ -38,3 +42,12 @@ export type FavouritesPageScreenProps = StackScreenProps<
   "FavouriteDiscounts"
 >;
 export type SignInScreenProps = StackScreenProps<RootStackParamList, "SignIn">;
+
+export type EventsScreenProps = StackScreenProps<
+  RootStackParamList,
+  "EventsScreen"
+>;
+export type ViewEventScreenProps = StackScreenProps<
+  RootStackParamList,
+  "ViewEventScreen"
+>;
