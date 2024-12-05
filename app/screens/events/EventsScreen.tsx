@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, FlatList } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { firestoreDb } from "@/firebaseConfig"; // Import Twojej konfiguracji Firebase
-import { collection, getDocs } from "firebase/firestore"; // Import funkcji z Firestore
+import { firestoreDb } from "@/firebaseConfig"; 
+import { collection, getDocs } from "firebase/firestore";
 import EventCard from "@/components/EventCard";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { createStaticNavigation } from "@react-navigation/native";
