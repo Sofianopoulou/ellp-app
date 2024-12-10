@@ -2,7 +2,7 @@ import { useState } from "react";
 import { View, Text, ScrollView, StyleSheet, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Link, useRouter } from "expo-router";
-import { auth, realtimeDb } from "@/firebaseConfig";
+import { auth, database } from "@/firebaseConfig";
 import { createUserWithEmailAndPassword } from "@firebase/auth";
 import { ref, set } from "@firebase/database";
 
@@ -73,7 +73,7 @@ const SignUp = () => {
       // Store additional user details in Firebase Realtime Database
       if (userCredential.user) {
         const userId = userCredential.user.uid;
-        await set(ref(realtimeDb, `users/${userId}`), {
+        await set(ref(database, `users/${userId}`), {
           name: form.name,
           email: form.email,
           phone: form.phone,
@@ -86,21 +86,19 @@ const SignUp = () => {
         });
 
         // Initialize leaderboard data
-        await set(ref(realtimeDb, `users/${userId}/leaderboard`), {
+        await set(ref(database, `users/${userId}/leaderboard`), {
           totalSteps: 0,
         });
 
         setAlertContent({
           title: "Success",
-          message: "Your account has been created successfully!",
+          message:
+            "Your account has been created successfully! Log in to start using the app!",
         });
         setAlertVisible(true);
-
-        // Navigate to sign-in screen after a short delay
         setTimeout(() => {
-          setAlertVisible(false);
-          router.push("/(auth)/sign-in");
-        }, 1000);
+          router.push("/(auth)/sign-in"); // Navigate to the Sign In screen
+        }, 2000);
       }
     } catch (error: any) {
       // Handle Firebase errors

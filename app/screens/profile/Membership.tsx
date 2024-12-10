@@ -8,8 +8,9 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
 import { getAuth } from "firebase/auth";
 import { onValue, ref } from "firebase/database";
-import { database } from "@/firebaseConfig";
+
 import { useLayoutEffect } from "react";
+import { database } from "@/firebaseConfig";
 
 type ProfileScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,

@@ -20,6 +20,11 @@ const ProfileImageComponent: React.FC<Props> = ({
 }) => {
   const [profileImageUri, setProfileImageUri] = useState<string | null>(null);
 
+  const uriToBlob = async (uri: string): Promise<Blob> => {
+    const response = await fetch(uri);
+    return await response.blob();
+  };
+
   const handleEditProfilePicture = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
 

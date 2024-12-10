@@ -14,6 +14,7 @@ import images from "@/assets/images";
 import { MaterialIcons, FontAwesome } from "@expo/vector-icons";
 import EventCard from "@/components/EventCard";
 import { SafeAreaView } from "react-native-safe-area-context";
+import colors from "@/assets/colors/colors";
 
 interface EventData {
   id: string;
@@ -217,6 +218,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     paddingBottom: 0,
+    backgroundColor: colors.white,
   },
 
   modalOverlay: {

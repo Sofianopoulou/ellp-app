@@ -18,10 +18,8 @@ import { useEffect, useState } from "react";
 import CustomAlert from "@/components/CustomAlert";
 import { useRouter } from "expo-router";
 import { onValue, ref } from "firebase/database";
-import { realtimeDb } from "@/firebaseConfig";
 import Loading from "@/components/Loading";
-import { fetchUserData } from "@/utils/firebaseUtils";
-import FavouriteDiscounts from "./FavouriteDiscounts";
+import { database } from "@/firebaseConfig";
 
 type ProfileScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -41,7 +39,7 @@ const Profile = () => {
     const currentUser = auth.currentUser;
 
     if (currentUser) {
-      const userRef = ref(realtimeDb, `users/${currentUser.uid}`);
+      const userRef = ref(database, `users/${currentUser.uid}`);
       const unsubscribe = onValue(userRef, (snapshot) => {
         if (snapshot.exists()) {
           setUserData(snapshot.val());
@@ -77,7 +75,7 @@ const Profile = () => {
       await signOut(auth); // Sign out the user from Firebase
       console.log("Logged Out");
 
-      router.push("/(auth)/sign-in");
+      router.replace("/(auth)/sign-in");
     } catch (error) {
       console.log("Error during logout:", error);
     }
