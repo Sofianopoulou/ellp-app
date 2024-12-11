@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { View, Text, Image } from "react-native";
 import colors from "@/assets/colors/colors";
 
 import Feather from "@expo/vector-icons/Feather";
@@ -107,8 +107,16 @@ const Profile = () => {
             borderColor: colors.fitness_tab,
           }}
         >
-          <Ionicons name="person-sharp" size={50} />
+          {userData?.profileImage ? (
+            <Image
+              source={{ uri: userData.profileImage }} // Base64 image
+              style={{ width: 80, height: 80, borderRadius: 40 }}
+            />
+          ) : (
+            <Ionicons name="person-sharp" size={50} />
+          )}
         </View>
+
         <View style={{ alignItems: "center", margin: 20 }}>
           <Text style={{ fontFamily: "Lexend-Medium" }}>
             {userData?.name || "Unknown User"}
@@ -123,7 +131,7 @@ const Profile = () => {
           onPress={() => navigation.navigate("Membership")}
         />
 
-        {/* onboarding testing button */}
+        {/* Onboarding Testing Button */}
         <SmallButtonComponent
           title="Clear Onboarding"
           onPress={clearOnboarding}

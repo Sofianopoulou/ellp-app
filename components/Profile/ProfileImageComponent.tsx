@@ -1,12 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Image, TouchableOpacity, StyleSheet } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import colors from "@/assets/colors/colors";
 import * as ImagePicker from "expo-image-picker";
-import { updateProfile, uploadProfileImage } from "@/utils/firebaseUtils";
 import { getAuth } from "firebase/auth";
-import { ref, set, update } from "firebase/database";
+import { ref, update, onValue } from "firebase/database";
 import { database } from "@/firebaseConfig";
 
 interface Props {
@@ -20,51 +19,76 @@ const ProfileImageComponent: React.FC<Props> = ({
 }) => {
   const [profileImageUri, setProfileImageUri] = useState<string | null>(null);
 
-  const uriToBlob = async (uri: string): Promise<Blob> => {
-    const response = await fetch(uri);
-    return await response.blob();
-  };
+  useEffect(() => {
+    const fetchProfileImage = () => {
+      const user = getAuth().currentUser;
+      if (user) {
+        const userRef = ref(database, `users/${user.uid}/profileImage`);
+        onValue(userRef, (snapshot) => {
+          if (snapshot.exists()) {
+            setProfileImageUri(snapshot.val()); // Load the Base64 or image URL
+          }
+        });
+      }
+    };
+
+    fetchProfileImage();
+  }, []);
 
   const handleEditProfilePicture = async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-
-    if (status !== "granted") {
-      onSuccessAlert("Permission Denied", "You need to grant photo access.");
-      return;
-    }
-
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ["images"],
-      allowsEditing: true,
-      aspect: [1, 1],
-      quality: 0.7,
-    });
-
-    if (!result.canceled) {
-      const selectedUri = result.assets[0].uri;
-      setProfileImageUri(selectedUri); // Update UI with selected image
-
-      try {
-        // Upload the image to Firebase Storage
-        const downloadURL = await uploadProfileImage(selectedUri);
-
-        // Update the profile in Firebase Realtime Database with the new profile image URL
-        const auth = getAuth();
-        const currentUser = auth.currentUser;
-
-        if (currentUser) {
-          const userId = currentUser.uid;
-
-          // Update user's profile in Firebase Realtime Database (set the profileimage URL)
-          await update(ref(database, `users/${userId}`), {
-            profileimage: downloadURL,
-          });
-
-          onSuccessAlert("Success", "Profile picture updated successfully.");
-        }
-      } catch (error) {
-        onSuccessAlert("Error", "Failed to upload profile picture.");
+    try {
+      const { status } =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== "granted") {
+        onSuccessAlert(
+          "Permission Denied",
+          "You need to allow access to your photos."
+        );
+        return;
       }
+
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ["images"],
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 1,
+      });
+
+      if (!result.canceled && result.assets && result.assets[0]?.uri) {
+        const imageUri = result.assets[0].uri;
+        setProfileImageUri(imageUri);
+
+        // Convert image to Base64 string
+        const response = await fetch(imageUri);
+        const blob = await response.blob();
+        const reader = new FileReader();
+
+        reader.onloadend = async () => {
+          const base64String = reader.result?.toString();
+
+          if (base64String) {
+            const user = getAuth().currentUser;
+            if (user) {
+              const userId = user.uid;
+
+              // Store the Base64 string in the Realtime Database
+              await update(ref(database, `users/${userId}`), {
+                profileImage: base64String,
+              });
+
+              onSuccessAlert(
+                "Success",
+                "Profile picture updated successfully!"
+              );
+            }
+          }
+        };
+
+        reader.readAsDataURL(blob);
+      }
+    } catch (error) {
+      console.error("Error editing profile picture:", error);
+      onSuccessAlert("Error", "Failed to upload profile picture.");
     }
   };
 
@@ -74,7 +98,8 @@ const ProfileImageComponent: React.FC<Props> = ({
         {profileImageUri ? (
           <Image
             source={{ uri: profileImageUri }}
-            style={{ width: 80, height: 80, borderRadius: 40 }}
+            style={styles.image}
+            resizeMode="cover"
           />
         ) : (
           <Ionicons name="person-sharp" size={50} />
@@ -93,6 +118,7 @@ const ProfileImageComponent: React.FC<Props> = ({
 };
 
 const styles = StyleSheet.create({
+  image: { width: 80, height: 80, borderRadius: 40 },
   profileImageContainer: { alignItems: "center", marginBottom: 20 },
   profileImage: {
     width: 80,

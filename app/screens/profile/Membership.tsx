@@ -61,8 +61,8 @@ const Membership = () => {
         <View style={{ alignItems: "center", marginBottom: 20 }}>
           <View
             style={{
-              width: 80,
-              height: 80,
+              width: 100,
+              height: 100,
               borderRadius: 50,
               backgroundColor: colors.white,
               justifyContent: "center",
@@ -71,9 +71,9 @@ const Membership = () => {
               borderColor: colors.fitness_tab,
             }}
           >
-            {userData?.profilepicture ? (
+            {userData?.profileImage ? (
               <Image
-                source={{ uri: userData?.profilepicture }}
+                source={{ uri: userData.profileImage }}
                 style={{ width: "100%", height: "100%", borderRadius: 50 }}
                 resizeMode="cover"
               />

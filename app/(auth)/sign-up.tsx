@@ -83,11 +83,7 @@ const SignUp = () => {
             hasMembership: false,
             expiryDate: "",
           },
-        });
-
-        // Initialize leaderboard data
-        await set(ref(database, `users/${userId}/leaderboard`), {
-          totalSteps: 0,
+          leaderboard: { totalSteps: 0 },
         });
 
         setAlertContent({
