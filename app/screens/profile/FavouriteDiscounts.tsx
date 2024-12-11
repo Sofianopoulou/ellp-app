@@ -98,5 +98,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     marginTop: 20,
+    backgroundColor: colors.white,
   },
 });

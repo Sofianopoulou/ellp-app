@@ -40,7 +40,7 @@ export default function InitialScreen() {
   // };
 
   // Check the user's login status using Firebase Authentication
-  const checkLogin = () => {
+  const checkLogin = async () => {
     const auth = getAuth();
     try {
       // Listen for authentication state changes
@@ -61,8 +61,14 @@ export default function InitialScreen() {
   };
 
   useEffect(() => {
-    checkOnboarding();
-    // checkLogin();
+    const initializeApp = async () => {
+      setLoading(true);
+      await checkOnboarding();
+      await checkLogin();
+      setLoading(false);
+    };
+
+    initializeApp();
   }, []);
 
   return loading ? (

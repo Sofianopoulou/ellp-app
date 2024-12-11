@@ -39,6 +39,7 @@ export default function ProfileStackScreen() {
           headerShown: true,
           headerBackTitle: "Back",
           headerShadowVisible: false,
+          headerTitle: "",
         }}
       />
 
@@ -49,6 +50,7 @@ export default function ProfileStackScreen() {
           headerShown: true,
           headerBackTitle: "Back",
           headerShadowVisible: false,
+          headerTitle: "",
         }}
       />
 
@@ -59,6 +61,7 @@ export default function ProfileStackScreen() {
           headerShown: true,
           headerBackTitle: "Back",
           headerShadowVisible: false,
+          headerTitle: "",
         }}
       />
 
@@ -69,6 +72,7 @@ export default function ProfileStackScreen() {
           headerShown: true,
           headerBackTitle: "Back",
           headerShadowVisible: false,
+          headerTitle: "",
         }}
       />
 
@@ -79,6 +83,7 @@ export default function ProfileStackScreen() {
           headerShown: true,
           headerBackTitle: "Back",
           headerShadowVisible: false,
+          headerTitle: "",
         }}
       />
 
@@ -89,6 +94,7 @@ export default function ProfileStackScreen() {
           headerShown: true,
           headerBackTitle: "Back",
           headerShadowVisible: false,
+          headerTitle: "",
         }}
       />
     </ProfileStack.Navigator>
