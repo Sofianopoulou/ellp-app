@@ -1,71 +1,7 @@
-import {
-  View,
-  StyleSheet,
-  FlatList,
-  Modal,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  ImageBackground,
-} from "react-native";
-
-import React, { useState } from "react";
-import images from "@/assets/images";
-import { MaterialIcons, FontAwesome } from "@expo/vector-icons";
-import EventCard from "@/components/EventCard";
-import { SafeAreaView } from "react-native-safe-area-context";
-import colors from "@/assets/colors/colors";
-
-interface EventData {
-  id: string;
-  imageUrl: string;
-  location: string;
-  date: string;
-  description: string;
-  title: string;
-  startTime: string;
-  endTime?: string;
-  discount?: string;
-  price?: string;
-  priceMembers?: string;
-  contact?: string;
-}
-
-const eventsData = [
-  {
-    id: "1",
-    imageUrl: images.example_event,
-    location: "Las Palmas",
-    date: "12 Sep, 2024",
-    description: "You cannot miss it!",
-    title: "Las Palmas Tour",
-    price: "1000",
-    startTime: "10:00 AM",
-    endTime: "12:00 PM",
-  },
-  {
-    id: "2",
-    imageUrl: require("../../assets/images/event-example.jpg"),
-    location: "Las Palmas",
-    date: "12 Sep, 2024",
-    description: "You cannot miss it!",
-    title: "Tapas Night",
-    price: "1000",
-    discount: "15% OFF",
-    startTime: "6:00 PM",
-  },
-  {
-    id: "3",
-    imageUrl: require("../../assets/images/event-example.jpg"),
-    location: "Las Palmas",
-    date: "12 Sep, 2024",
-    description: "You cannot miss it!",
-    title: "Museum day",
-    price: "1000",
-    priceMembers: "900",
-    discount: "15% OFF",
-  },
-];
+import React from "react";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import EventsScreen from "../screens/events/EventsScreen";
+import ViewEventScreen from "../screens/events/ViewEventScreen";
 
 const Events = () => {
   const [selectedEvent, setSelectedEvent] = useState<EventData | null>(null);
@@ -218,7 +154,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     paddingBottom: 0,
-    backgroundColor: colors.white,
   },
 
   modalOverlay: {
@@ -296,4 +231,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Events;
+export default EventsStack;

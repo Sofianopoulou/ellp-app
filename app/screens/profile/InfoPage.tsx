@@ -11,7 +11,7 @@ import colors from "@/assets/colors/colors";
 import { StyleSheet } from "react-native";
 
 import { useNavigation } from "@react-navigation/native";
-import { RootStackParamList } from "@/app/types/Navigation";
+import RootStackParamList from "@/app/types/Navigation";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useLayoutEffect } from "react";
 

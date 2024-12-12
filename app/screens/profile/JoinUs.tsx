@@ -11,7 +11,7 @@ import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { MdGroups } from "react-icons/md";
 import { useNavigation } from "@react-navigation/native";
-import { RootStackParamList } from "@/app/types/Navigation";
+import RootStackParamList from "@/app/types/Navigation";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 import Ionicons from "@expo/vector-icons/Ionicons";

@@ -6,7 +6,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import AntDesign from "@expo/vector-icons/AntDesign";
 
 import { useNavigation } from "@react-navigation/native";
-import { RootStackParamList } from "@/app/types/Navigation";
+import RootStackParamList from "@/app/types/Navigation";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import SmallButtonComponent from "@/components/SmallButtonComponent";
 import MediumButtonComponent from "@/components/MediumButtonComponent";
