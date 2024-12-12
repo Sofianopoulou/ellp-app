@@ -22,94 +22,25 @@ interface Discount {
   category: string;
 }
 
-const Discounts = () => {
-  const [selectedCategory, setSelectedCategory] = useState("All");
-  const [loading, setLoading] = useState(true);
-  const [discounts, setDiscounts] = useState<Discount[]>([]);
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import React from "react";
+import DiscountsScreen from "../screens/discounts/DiscountsScreen";
+import ViewDiscountScreen from "../screens/discounts/ViewDiscountScreen";
 
-  useEffect(() => {
-    const discountsCollection = collection(firestoreDb, "discounts");
+const discountsStack = createNativeStackNavigator();
 
-    const unsubscribe = onSnapshot(
-      discountsCollection,
-      (snapshot: QuerySnapshot<DocumentData>) => {
-        const discountItems = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        })) as Discount[];
-
-        setDiscounts(discountItems);
-        setLoading(false); // Data loaded
-      },
-      (error) => {
-        console.error("Error fetching discounts: ", error);
-        setLoading(false); // Stop loading even on error
-      }
-    );
-
-    return () => unsubscribe();
-  }, []);
-
-  const filteredData = discounts.filter((discount) => {
-    if (selectedCategory === "All") return true;
-    return discount.category === selectedCategory;
-  });
-
-  const [favorites, setFavorites] = useState<string[]>([]); // List of favorite IDs
-
-  const handleToggleFavorite = (id: string, isFavorite: boolean) => {
-    setFavorites((prevFavorites) =>
-      isFavorite
-        ? [...prevFavorites, id]
-        : prevFavorites.filter((favId) => favId !== id)
-    );
-  };
-
-  if (loading) {
-    return <ActivityIndicator size="large" color="#000ff" />;
-  }
-
+export default function DiscountsStackScreen() {
   return (
-    <View style={styles.container}>
-      <View style={styles.filteringSection}>
-        <FilteringTabs
-          selectedCategory={selectedCategory}
-          onCategoryChange={(category) => setSelectedCategory(category)}
-        />
-      </View>
-      <FlatList
-        showsVerticalScrollIndicator={false}
-        data={filteredData}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <DiscountCard
-            imageUrl={item.imageUrl}
-            location={item.location}
-            title={item.title}
-            discount={item.discount}
-            onPress={() => {
-              console.log(`Navigating to details for ${item.title}`);
-            }}
-            onToggleFavorite={(isFavorite) =>
-              handleToggleFavorite(item.id, isFavorite)
-            }
-          />
-        )}
+    <discountsStack.Navigator>
+      <discountsStack.Screen
+        name="DiscountsScreen"
+        component={DiscountsScreen}
+        options={{ headerShown: false }}
       />
-    </View>
+      <discountsStack.Screen
+        name="ViewDiscountScreen"
+        component={ViewDiscountScreen}
+      />
+    </discountsStack.Navigator>
   );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginTop: 20,
-    padding: 16,
-  },
-
-  filteringSection: {
-    height: 105,
-  },
-});
-
-export default Discounts;
+}

@@ -1,3 +1,4 @@
+import { DiscountData } from "../screens/discounts/DiscountsScreen";
 import { EventData } from "../screens/events/EventsScreen";
 import { StackScreenProps } from "@react-navigation/stack";
 
@@ -12,6 +13,8 @@ type RootStackParamList = {
   FavouriteDiscounts: undefined;
   EventsScreen: undefined; // No parameters for this screen
   ViewEventScreen: { event: EventData };
+  DiscountsScreen: undefined;
+  ViewDiscountScreen: { discount: DiscountData };
 };
 export default RootStackParamList;
 
@@ -50,4 +53,14 @@ export type EventsScreenProps = StackScreenProps<
 export type ViewEventScreenProps = StackScreenProps<
   RootStackParamList,
   "ViewEventScreen"
+>;
+
+export type DiscountsScreenProps = StackScreenProps<
+  RootStackParamList,
+  "DiscountsScreen"
+>;
+
+export type ViewDiscountScreenProps = StackScreenProps<
+  RootStackParamList,
+  "ViewDiscountScreen"
 >;

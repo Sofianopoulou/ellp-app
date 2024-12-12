@@ -105,11 +105,12 @@ export default function ViewEventScreen({ route, navigation }: Props) {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    paddingHorizontal: 26,
+    margin: 10,
+    paddingHorizontal: 38,
   },
   eventImage: {
     width: "100%",
-    height: 200,
+    height: 180,
     marginBottom: 16,
   },
   title: {
