@@ -23,7 +23,7 @@ const SignIn = () => {
       const auth = getAuth();
       await signInWithEmailAndPassword(auth, form.email, form.password);
       console.log("Sign-in successful!");
-      router.push("/(tabs)/events");
+      // router.push("/(tabs)/events");
     } catch (err) {
       console.error("Error during sign-in:", err);
       setError("Invalid email or password. Please try again.");

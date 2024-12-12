@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { View, Text, Image } from "react-native";
 import colors from "@/assets/colors/colors";
 
 import Feather from "@expo/vector-icons/Feather";
@@ -18,10 +18,8 @@ import { useEffect, useState } from "react";
 import CustomAlert from "@/components/CustomAlert";
 import { useRouter } from "expo-router";
 import { onValue, ref } from "firebase/database";
-import { realtimeDb } from "@/firebaseConfig";
 import Loading from "@/components/Loading";
-import { fetchUserData } from "@/utils/firebaseUtils";
-import FavouriteDiscounts from "./FavouriteDiscounts";
+import { database } from "@/firebaseConfig";
 
 type ProfileScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -41,7 +39,7 @@ const Profile = () => {
     const currentUser = auth.currentUser;
 
     if (currentUser) {
-      const userRef = ref(realtimeDb, `users/${currentUser.uid}`);
+      const userRef = ref(database, `users/${currentUser.uid}`);
       const unsubscribe = onValue(userRef, (snapshot) => {
         if (snapshot.exists()) {
           setUserData(snapshot.val());
@@ -77,7 +75,7 @@ const Profile = () => {
       await signOut(auth); // Sign out the user from Firebase
       console.log("Logged Out");
 
-      router.push("/(auth)/sign-in");
+      router.replace("/(auth)/sign-in");
     } catch (error) {
       console.log("Error during logout:", error);
     }
@@ -109,8 +107,16 @@ const Profile = () => {
             borderColor: colors.fitness_tab,
           }}
         >
-          <Ionicons name="person-sharp" size={50} />
+          {userData?.profileImage ? (
+            <Image
+              source={{ uri: userData.profileImage }} // Base64 image
+              style={{ width: 80, height: 80, borderRadius: 40 }}
+            />
+          ) : (
+            <Ionicons name="person-sharp" size={50} />
+          )}
         </View>
+
         <View style={{ alignItems: "center", margin: 20 }}>
           <Text style={{ fontFamily: "Lexend-Medium" }}>
             {userData?.name || "Unknown User"}
@@ -125,7 +131,7 @@ const Profile = () => {
           onPress={() => navigation.navigate("Membership")}
         />
 
-        {/* onboarding testing button */}
+        {/* Onboarding Testing Button */}
         <SmallButtonComponent
           title="Clear Onboarding"
           onPress={clearOnboarding}

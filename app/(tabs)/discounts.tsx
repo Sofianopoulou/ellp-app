@@ -1,5 +1,4 @@
 import { View, StyleSheet, FlatList, ActivityIndicator } from "react-native";
-import images from "@/assets/images";
 import DiscountCard from "@/components/DiscountCard";
 import DiscountProfileCard from "@/components/DiscountProfileCard";
 import FilteringTabs from "@/components/FilteringTabs";
@@ -12,6 +11,8 @@ import {
   onSnapshot,
 } from "firebase/firestore";
 import { firestoreDb } from "@/firebaseConfig";
+import colors from "@/assets/colors/colors";
+import Loading from "@/components/Loading";
 
 interface Discount {
   id: string;

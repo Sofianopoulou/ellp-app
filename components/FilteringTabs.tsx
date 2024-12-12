@@ -25,7 +25,7 @@ const FilteringTabs: React.FC<FilteringTabsProps> = ({
     <ScrollView
       horizontal
       showsHorizontalScrollIndicator={false}
-      style={{ marginTop: 30, marginBottom: 10, marginHorizontal: 20 }}
+      style={styles.srollView}
     >
       {categories.map((category) => (
         <TouchableOpacity
@@ -47,21 +47,26 @@ const FilteringTabs: React.FC<FilteringTabsProps> = ({
 };
 
 const styles = StyleSheet.create({
+  srollView: {
+    marginVertical: 30,
+    marginHorizontal: 20,
+  },
   tab: {
-    paddingVertical: 15,
+    paddingVertical: 5,
     paddingHorizontal: 15,
     borderRadius: 20,
-    marginRight: 10,
+    marginHorizontal: 5,
+    marginVertical: 1,
     alignItems: "center",
     justifyContent: "center",
-    opacity: 0.6
   },
   tabText: {
     color: colors.white,
     fontFamily: "Lexend-Light",
   },
   selectedTab: {
-    elevation: 4, // Elevation for Android
+    transform: [{ scale: 1.1 }],
+    elevation: 4,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 }, // Shadow for iOS
     shadowOpacity: 0.85,
