@@ -1,8 +1,6 @@
 import { Redirect } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, View } from "react-native";
-import colors from "@/assets/colors/colors";
 import Onboarding from "@/components/Onboarding/Onboarding";
 import {
   getAuth,

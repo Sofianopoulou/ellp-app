@@ -113,7 +113,7 @@ const Profile = () => {
               style={{ width: 80, height: 80, borderRadius: 40 }}
             />
           ) : (
-            <Ionicons name="person-sharp" size={50} />
+            <Ionicons name="person" size={50} />
           )}
         </View>
 

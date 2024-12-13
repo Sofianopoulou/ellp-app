@@ -5,16 +5,15 @@ import LargeButtonComponent from "@/components/LargeButtonComponent";
 import colors from "@/assets/colors/colors";
 import { fetchUserData, updateProfile } from "@/utils/firebaseUtils";
 import { getAuth } from "firebase/auth";
+import ProfileImageComponent from "./ProfileImageComponent";
 
 interface Props {
-  onUpdateProfile: (updatedData: object) => Promise<void>;
   onSuccessAlert: (title: string, message: string) => void;
   isEditing: boolean;
   setIsEditing: (value: boolean) => void;
 }
 
 const ProfileFieldsComponent: React.FC<Props> = ({
-  onUpdateProfile,
   onSuccessAlert,
   isEditing,
   setIsEditing,
@@ -26,13 +25,13 @@ const ProfileFieldsComponent: React.FC<Props> = ({
     phone: "",
     password: "",
   });
+  const [tempProfileImage, setTempProfileImage] = useState<string | null>(null);
 
   useEffect(() => {
     const loadUserData = async () => {
       try {
         const data = await fetchUserData();
         setUserData(data);
-        console.log("Fetched user data:", data);
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
@@ -47,7 +46,6 @@ const ProfileFieldsComponent: React.FC<Props> = ({
       const currentUser = auth.currentUser;
 
       if (!currentUser) {
-        console.error("No user is logged in.");
         onSuccessAlert("Error", "No user is logged in.");
         return;
       }
@@ -57,9 +55,12 @@ const ProfileFieldsComponent: React.FC<Props> = ({
       const updatedData = Object.fromEntries(
         Object.entries(inputs).filter(([, value]) => value.trim() !== "")
       );
-      console.log("Updated data:", updatedData);
+
+      if (tempProfileImage) {
+        updatedData.profileImage = tempProfileImage;
+      }
+
       if (Object.keys(updatedData).length > 0) {
-        // Call updateProfile with the current user's UID and the updated data
         await updateProfile(userId, updatedData);
         onSuccessAlert("Success", "Your profile has been updated.");
       }
@@ -73,12 +74,18 @@ const ProfileFieldsComponent: React.FC<Props> = ({
 
   return (
     <View style={styles.fieldContainer}>
+      <ProfileImageComponent
+        isEditing={isEditing}
+        onSuccessAlert={onSuccessAlert}
+        onSaveImage={(imageUri) => setTempProfileImage(imageUri)}
+        onCancelImageEdit={() => setIsEditing(false)}
+      />
       <Text style={styles.label}>Full Name</Text>
       <View style={styles.inputContainer}>
         <Feather name="user" size={18} color={colors.secondary} />
         <TextInput
           placeholder={userData?.name || ""}
-          editable={isEditing}
+          editable={false}
           style={styles.textInput}
           value={inputs.name}
           onChangeText={(text) =>
@@ -92,7 +99,7 @@ const ProfileFieldsComponent: React.FC<Props> = ({
         <Feather name="mail" size={18} color={colors.secondary} />
         <TextInput
           placeholder={userData?.email || ""}
-          editable={isEditing}
+          editable={false}
           style={styles.textInput}
           value={inputs.email}
           onChangeText={(text) =>
@@ -106,7 +113,7 @@ const ProfileFieldsComponent: React.FC<Props> = ({
         <Feather name="phone" size={18} color={colors.secondary} />
         <TextInput
           placeholder={userData?.phone || ""}
-          editable={isEditing}
+          editable={false}
           style={styles.textInput}
           value={inputs.phone}
           onChangeText={(text) =>
@@ -120,7 +127,7 @@ const ProfileFieldsComponent: React.FC<Props> = ({
         <Feather name="lock" size={18} color={colors.secondary} />
         <TextInput
           placeholder="************"
-          editable={isEditing}
+          editable={false}
           secureTextEntry
           style={styles.textInput}
           value={inputs.password}
