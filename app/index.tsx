@@ -26,17 +26,6 @@ export default function InitialScreen() {
     }
   };
 
-  // const checkLogin = async () => {
-  //   try {
-  //     const loginStatus = await AsyncStorage.getItem("@isLoggedIn");
-  //     if (loginStatus !== null) setIsLoggedIn(true);
-  //   } catch (err) {
-  //     console.log("Error @checkLogin:", err);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
   // Check the user's login status using Firebase Authentication
   const checkLogin = async () => {
     const auth = getAuth();
