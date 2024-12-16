@@ -3,7 +3,7 @@ import { View, Text, ScrollView, StyleSheet, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Link, useRouter } from "expo-router";
 import { auth, database } from "@/firebaseConfig";
-import { createUserWithEmailAndPassword } from "@firebase/auth";
+import { createUserWithEmailAndPassword, signOut } from "@firebase/auth";
 import { ref, set } from "@firebase/database";
 
 import images from "@/assets/images";
@@ -86,15 +86,16 @@ const SignUp = () => {
           leaderboard: { totalSteps: 0 },
         });
 
+        await signOut(auth);
+
         setAlertContent({
           title: "Success",
           message:
             "Your account has been created successfully! Log in to start using the app!",
         });
         setAlertVisible(true);
-        setTimeout(() => {
-          router.push("/(auth)/sign-in"); // Navigate to the Sign In screen
-        }, 2000);
+
+        router.push("/(auth)/sign-in");
       }
     } catch (error: any) {
       // Handle Firebase errors
