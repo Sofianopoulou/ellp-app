@@ -7,9 +7,8 @@ import Paginator from "./Paginator";
 import SmallButtonComponent from "../SmallButtonComponent";
 import SkipButton from "./SkipButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Link, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { StatusBar } from "expo-status-bar";
 
 const Onboarding = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -54,7 +53,6 @@ const Onboarding = () => {
   const handleSkipPress = async () => {
     try {
       await AsyncStorage.setItem("@viewedOnboarding", "true");
-      router.replace("/");
     } catch (err) {
       console.log("Error @setItem:", err);
     }

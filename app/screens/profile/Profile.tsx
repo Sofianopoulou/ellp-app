@@ -132,11 +132,11 @@ const Profile = () => {
         />
 
         {/* Onboarding Testing Button */}
-        <SmallButtonComponent
+        {/* <SmallButtonComponent
           title="Clear Onboarding"
           onPress={clearOnboarding}
           style={{ margin: 10 }}
-        />
+        /> */}
       </View>
 
       <View style={{ height: 1, backgroundColor: colors.grey_background }} />
