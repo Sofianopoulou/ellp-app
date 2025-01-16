@@ -83,7 +83,9 @@ const Membership = () => {
               <Ionicons name="person" size={50} color={colors.text} />
             )}
           </View>
-          <Text style={{ fontFamily: "Lexend-Medium", marginTop: 10 }}>
+          <Text
+            style={{ fontFamily: "Lexend-Medium", marginTop: 10, fontSize: 20 }}
+          >
             {userData?.name}
           </Text>
           <MembershipStatus

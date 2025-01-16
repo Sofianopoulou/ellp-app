@@ -110,7 +110,12 @@ const Profile = () => {
           {userData?.profileImage ? (
             <Image
               source={{ uri: userData.profileImage }} // Base64 image
-              style={{ width: 80, height: 80, borderRadius: 40 }}
+              style={{
+                width: 120,
+                height: 120,
+                borderRadius: 100,
+                marginBottom: 40,
+              }}
             />
           ) : (
             <Ionicons name="person" size={50} />
@@ -118,10 +123,16 @@ const Profile = () => {
         </View>
 
         <View style={{ alignItems: "center", margin: 20 }}>
-          <Text style={{ fontFamily: "Lexend-Medium" }}>
+          <Text style={{ fontFamily: "Lexend-Medium", fontSize: 20 }}>
             {userData?.name || "Unknown User"}
           </Text>
-          <Text style={{ fontFamily: "Lexend-Light", color: colors.text }}>
+          <Text
+            style={{
+              fontFamily: "Lexend-Light",
+              color: colors.text,
+              fontSize: 16,
+            }}
+          >
             {userData?.email || "Unknown Email"}
           </Text>
         </View>

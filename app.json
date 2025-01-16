@@ -8,6 +8,7 @@
     "scheme": "ellp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "assetBundlePatterns": ["**/*"],
     "splash": {
       "image": "./assets/images/ellp-logo.png",
       "resizeMode": "contain",
@@ -15,7 +16,8 @@
     },
     "ios": {
       "googleServicesFile": "./GoogleService-Info.plist",
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.anonymous.ellpapp"
     },
     "android": {
       "googleServicesFile": "./google-services.json",
