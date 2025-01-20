@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -29,7 +29,7 @@ const DiscountCard: React.FC<DiscountCardProps> = ({
   discount,
   onPress,
   onToggleFavorite,
-  isFavorite = false,
+  isFavorite,
 }) => {
   const image = require("../assets/images/event-example.jpg");
   const [favorite, setFavorite] = useState(isFavorite);
@@ -39,6 +39,10 @@ const DiscountCard: React.FC<DiscountCardProps> = ({
     setFavorite(newFavoriteState);
     onToggleFavorite(newFavoriteState); // Inform parent about the state change
   };
+
+  useEffect(() => {
+    setFavorite(isFavorite);
+  }, [isFavorite]);
 
   return (
     <View style={styles.card}>
@@ -56,7 +60,7 @@ const DiscountCard: React.FC<DiscountCardProps> = ({
           <Text style={styles.location}>{location}</Text>
           <TouchableOpacity onPress={() => toggleFavorite()}>
             <FontAwesome
-              name={favorite ? "heart" : "heart-o"} // Filled or empty heart
+              name={favorite ? "heart" : "heart-o"} 
               size={20}
               color={favorite ? "red" : "black"}
             />

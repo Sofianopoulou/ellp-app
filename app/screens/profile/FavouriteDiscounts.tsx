@@ -1,32 +1,98 @@
-import {
-  View,
-  Text,
-  Image,
-  Dimensions,
-  TouchableOpacity,
-  ScrollView,
-  Linking,
-  FlatList,
-} from "react-native";
+import { View, Dimensions, FlatList, StyleSheet } from "react-native";
 import colors from "@/assets/colors/colors";
-import { StyleSheet } from "react-native";
-
 import { useNavigation } from "@react-navigation/native";
 import RootStackParamList from "@/app/types/Navigation";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { useLayoutEffect } from "react";
-import images from "@/assets/images";
+import { useEffect, useLayoutEffect, useState } from "react";
 import DiscountProfileCard from "@/components/DiscountProfileCard";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { DiscountData } from "../discounts/DiscountsScreen";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { get, ref } from "firebase/database";
+import { database, firestoreDb } from "@/firebaseConfig";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
 
-type ProfileScreenNavigationProp = NativeStackNavigationProp<
+type FavouritesPageScreenProps = NativeStackNavigationProp<
   RootStackParamList,
-  "Profile"
+  "FavouriteDiscounts"
 >;
 
 const FavouriteDiscounts = () => {
-  const { width, height } = Dimensions.get("window");
-  const navigation = useNavigation<ProfileScreenNavigationProp>();
+  const navigation = useNavigation<FavouritesPageScreenProps>();
+  var [favouriteUserDiscountsIds, setFavouriteUserDiscountsIds] = useState<
+    string[]
+  >([]);
+  var [favouriteUserDiscounts, setFavouriteUserDiscounts] = useState<
+    DiscountData[]
+  >([]);
+  const [userId, setUserId] = useState<string>();
+  const [loading, setLoading] = useState(true);
+
+  // set user id
+  useEffect(() => {
+    setLoading(true);
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUserId(user.uid);
+      } else {
+        setUserId(undefined);
+      }
+      setLoading(false);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  //load liked discounts ids
+  useEffect(() => {
+    if (!userId) return;
+    const loadFavouriteDiscountsForUser = async (userId: string) => {
+      setLoading(true);
+      try {
+        const dbRef = ref(database, `users/${userId}/likedDiscounts`);
+        const snapshot = await get(dbRef);
+        if (snapshot.exists()) {
+          const data = snapshot.val();
+          console.log(data);
+          setFavouriteUserDiscountsIds(Object.keys(data));
+          console.log(favouriteUserDiscountsIds);
+        }
+      } catch (error) {
+        console.error("Error loading favorites: ", error);
+      }
+      setLoading(false);
+    };
+    loadFavouriteDiscountsForUser(userId);
+  }, [userId]);
+
+  useEffect(() => {
+    if (!favouriteUserDiscountsIds || favouriteUserDiscountsIds.length === 0)
+      return;
+    setLoading(true);
+    const discountsCollection = collection(firestoreDb, "discounts");
+    const discountsQuery = query(
+      discountsCollection,
+      where("__name__", "in", favouriteUserDiscountsIds)
+    );
+    console.log(discountsQuery);
+    const unsubscribe = onSnapshot(
+      discountsQuery,
+      (snapshot) => {
+        const discountItems = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        })) as DiscountData[];
+        console.log(discountItems);
+        setFavouriteUserDiscounts(discountItems);
+        console.log(favouriteUserDiscounts);
+        setLoading(false);
+      },
+      (error) => {
+        console.error("Error fetching discounts: ", error);
+        setLoading(false);
+      }
+    );
+    return () => unsubscribe();
+  }, [favouriteUserDiscountsIds]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -35,55 +101,22 @@ const FavouriteDiscounts = () => {
     });
   }, [navigation]);
 
-  const discountProfileData = [
-    {
-      id: "1",
-      imageUrl: images.example_event,
-      location: "Las Palmas",
-      title: "3RJ SurfTime",
-      discount: "10% OFF",
-      category: "Fitness",
-    },
-    {
-      id: "2",
-      imageUrl: "./assets/images/event-example.jpg",
-      location: "Las Palmas",
-      title: "Surf School",
-      discount: "15% OFF",
-      categpry: "Fitness",
-    },
-    {
-      id: "3",
-      imageUrl: images.example_event,
-      location: "Las Palmas",
-      title: "3RJ SurfTime",
-      discount: "10% OFF",
-      category: "Fitness",
-    },
-    {
-      id: "4",
-      imageUrl: images.luwak,
-      location: "Las Palmas",
-      title: "3RJ SurfTime",
-      discount: "10% OFF",
-      category: "Fitness",
-    },
-  ];
+  const handlePress = (discount: DiscountData) => {
+    navigation.navigate("ViewDiscountScreen", { discount });
+  };
 
   return (
     <View style={styles.container}>
       <FlatList
-        data={discountProfileData}
+        data={favouriteUserDiscounts}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <DiscountProfileCard
+            title={item.title}
             imageUrl={item.imageUrl}
             location={item.location}
-            title={item.title}
             discount={item.discount}
-            onPress={() => {
-              console.log(`Navigating to details for ${item.title}`);
-            }}
+            onPress={() => handlePress(item)}
           />
         )}
       />
@@ -97,7 +130,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
-    marginTop: 20,
     backgroundColor: colors.white,
   },
 });

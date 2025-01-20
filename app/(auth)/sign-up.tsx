@@ -84,6 +84,7 @@ const SignUp = () => {
             expiryDate: "",
           },
           leaderboard: { totalSteps: 0 },
+          likedDiscounts: {},
         });
 
         await signOut(auth);

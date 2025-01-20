@@ -2,32 +2,33 @@ import React from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { FontAwesome } from "@expo/vector-icons"; // For the heart and discount icon
 import colors from "@/assets/colors/colors";
+import { DiscountData } from "@/app/screens/discounts/DiscountsScreen";
 
-interface DiscountProfileCardProps {
+type DiscountFavouriteCardProps = {
   imageUrl: string;
   location: string;
   title: string;
   discount: string;
+  category?: string;
   onPress: () => void;
-}
+};
 
-const DiscountProfileCard: React.FC<DiscountProfileCardProps> = ({
+const DiscountProfileCard: React.FC<DiscountFavouriteCardProps> = ({
   imageUrl,
   location,
   title,
   discount,
   onPress,
 }) => {
-  const image = require("../assets/images/event-example.jpg");
   return (
     <View style={styles.card}>
       <Image
-        source={{ uri: imageUrl }} // Replace with your image URL
+        source={{ uri: imageUrl }} 
         style={styles.image}
       />
       <View style={styles.content}>
-        <Text style={styles.location}>LOCATION</Text>
-        <Text style={styles.title}>3RJ SurfTime</Text>
+        <Text style={styles.location}>{location}</Text>
+        <Text style={styles.title}>{title}</Text>
         <View style={styles.discountRow}>
           <FontAwesome
             name="percent"
@@ -35,9 +36,9 @@ const DiscountProfileCard: React.FC<DiscountProfileCardProps> = ({
             color="black"
             style={styles.icon}
           />
-          <Text style={styles.discountText}>10% OFF</Text>
+          <Text style={styles.discountText}>{discount}</Text>
         </View>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={onPress}>
           <Text style={styles.buttonText}>See more details</Text>
         </TouchableOpacity>
       </View>
