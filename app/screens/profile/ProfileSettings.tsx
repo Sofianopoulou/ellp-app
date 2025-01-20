@@ -10,7 +10,6 @@ import { auth } from "@/firebaseConfig";
 
 import SimpleAlert from "@/components/SimpleAlert";
 import { useRouter } from "expo-router";
-import ProfileImageComponent from "@/components/Profile/ProfileImageComponent";
 import DeleteProfileComponent from "@/components/Profile/DeleteProfileComponent";
 import ProfileFieldsComponent from "@/components/Profile/ProfileFieldsComponent";
 
@@ -30,23 +29,13 @@ const ProfileSettings = () => {
     setSimpleAlertVisible(true);
   };
 
-  const handleProfileUpdate = async (updatedData: object) => {
-    // Call Firebase update logic here
-    console.log("Updating profile with data:", updatedData);
-  };
-
   return (
     <KeyboardAvoidingView
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <ProfileImageComponent
-          onSuccessAlert={handleSuccessAlert}
-          isEditing={isEditing}
-        />
         <ProfileFieldsComponent
-          onUpdateProfile={handleProfileUpdate}
           onSuccessAlert={handleSuccessAlert}
           isEditing={isEditing}
           setIsEditing={setIsEditing}

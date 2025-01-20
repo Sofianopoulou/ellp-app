@@ -5,19 +5,24 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import colors from "@/assets/colors/colors";
 import * as ImagePicker from "expo-image-picker";
 import { getAuth } from "firebase/auth";
-import { ref, update, onValue } from "firebase/database";
+import { ref, onValue } from "firebase/database";
 import { database } from "@/firebaseConfig";
 
 interface Props {
   onSuccessAlert: (title: string, message: string) => void;
   isEditing: boolean;
+  onSaveImage: (imageUri: string | null) => void;
+  onCancelImageEdit: () => void;
 }
 
 const ProfileImageComponent: React.FC<Props> = ({
   onSuccessAlert,
   isEditing,
+  onSaveImage,
+  onCancelImageEdit,
 }) => {
   const [profileImageUri, setProfileImageUri] = useState<string | null>(null);
+  const [tempImageUri, setTempImageUri] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProfileImage = () => {
@@ -26,7 +31,7 @@ const ProfileImageComponent: React.FC<Props> = ({
         const userRef = ref(database, `users/${user.uid}/profileImage`);
         onValue(userRef, (snapshot) => {
           if (snapshot.exists()) {
-            setProfileImageUri(snapshot.val()); // Load the Base64 or image URL
+            setProfileImageUri(snapshot.val());
           }
         });
       }
@@ -34,6 +39,13 @@ const ProfileImageComponent: React.FC<Props> = ({
 
     fetchProfileImage();
   }, []);
+
+  // Reset profile image when cancel is clicked
+  useEffect(() => {
+    if (!isEditing) {
+      setTempImageUri(null);
+    }
+  }, [isEditing]);
 
   const handleEditProfilePicture = async () => {
     try {
@@ -56,35 +68,8 @@ const ProfileImageComponent: React.FC<Props> = ({
 
       if (!result.canceled && result.assets && result.assets[0]?.uri) {
         const imageUri = result.assets[0].uri;
-        setProfileImageUri(imageUri);
-
-        // Convert image to Base64 string
-        const response = await fetch(imageUri);
-        const blob = await response.blob();
-        const reader = new FileReader();
-
-        reader.onloadend = async () => {
-          const base64String = reader.result?.toString();
-
-          if (base64String) {
-            const user = getAuth().currentUser;
-            if (user) {
-              const userId = user.uid;
-
-              // Store the Base64 string in the Realtime Database
-              await update(ref(database, `users/${userId}`), {
-                profileImage: base64String,
-              });
-
-              onSuccessAlert(
-                "Success",
-                "Profile picture updated successfully!"
-              );
-            }
-          }
-        };
-
-        reader.readAsDataURL(blob);
+        setTempImageUri(imageUri); // Store temporarily
+        onSaveImage(imageUri); // Pass image URI to parent
       }
     } catch (error) {
       console.error("Error editing profile picture:", error);
@@ -95,14 +80,19 @@ const ProfileImageComponent: React.FC<Props> = ({
   return (
     <View style={styles.profileImageContainer}>
       <View style={styles.profileImage}>
-        {profileImageUri ? (
+        {tempImageUri || profileImageUri ? (
           <Image
-            source={{ uri: profileImageUri }}
+            source={{
+              uri:
+                tempImageUri ||
+                profileImageUri ||
+                "https://via.placeholder.com/80",
+            }}
             style={styles.image}
             resizeMode="cover"
           />
         ) : (
-          <Ionicons name="person-sharp" size={50} />
+          <Ionicons name="person" size={50} />
         )}
         {isEditing && (
           <TouchableOpacity

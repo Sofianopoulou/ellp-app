@@ -8,6 +8,7 @@
     "scheme": "ellp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "assetBundlePatterns": ["**/*"],
     "splash": {
       "image": "./assets/images/ellp-logo.png",
       "resizeMode": "contain",
@@ -15,7 +16,8 @@
     },
     "ios": {
       "googleServicesFile": "./GoogleService-Info.plist",
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.anonymous.ellpapp"
     },
     "android": {
       "googleServicesFile": "./google-services.json",
@@ -46,6 +48,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "9bca59f3-8f19-4897-aa18-d300429db2c6"
+      }
     }
   }
 }

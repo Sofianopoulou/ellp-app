@@ -153,7 +153,7 @@ const JoinUs = () => {
                 color: colors.text,
               }}
             >
-              €11,49
+              €14,90
               <Text style={{ fontFamily: "Lexend-Light", fontSize: 16 }}>
                 /year
               </Text>

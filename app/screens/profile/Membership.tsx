@@ -11,6 +11,7 @@ import { onValue, ref } from "firebase/database";
 
 import { useLayoutEffect } from "react";
 import { database } from "@/firebaseConfig";
+import { usePreventScreenCapture } from "expo-screen-capture";
 
 type ProfileScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -18,6 +19,7 @@ type ProfileScreenNavigationProp = NativeStackNavigationProp<
 >;
 
 const Membership = () => {
+  usePreventScreenCapture();
   const navigation = useNavigation<ProfileScreenNavigationProp>();
 
   useLayoutEffect(() => {
@@ -81,7 +83,9 @@ const Membership = () => {
               <Ionicons name="person" size={50} color={colors.text} />
             )}
           </View>
-          <Text style={{ fontFamily: "Lexend-Medium", marginTop: 10 }}>
+          <Text
+            style={{ fontFamily: "Lexend-Medium", marginTop: 10, fontSize: 20 }}
+          >
             {userData?.name}
           </Text>
           <MembershipStatus
