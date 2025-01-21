@@ -8,20 +8,12 @@ import { TouchableOpacity, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import colors from "@/assets/colors/colors";
 
-import { NativeStackNavigationOptions } from "@react-navigation/native-stack";
 import ProfileSettings from "../screens/profile/ProfileSettings";
 import FavouriteDiscounts from "../screens/profile/FavouriteDiscounts";
+import ViewDiscountScreen from "../screens/discounts/ViewDiscountScreen";
+import RootStackParamList from "../types/Navigation";
 
-const ProfileStack = createNativeStackNavigator();
-
-const BackButton = ({ navigation }: { navigation: any }) => (
-  <TouchableOpacity
-    onPress={() => navigation.goBack()}
-    style={{ flexDirection: "row", alignItems: "center", paddingLeft: 15 }}
-  >
-    <Ionicons name="arrow-back" size={24} color={colors.black} />
-  </TouchableOpacity>
-);
+const ProfileStack = createNativeStackNavigator<RootStackParamList>();
 
 export default function ProfileStackScreen() {
   return (
@@ -90,6 +82,17 @@ export default function ProfileStackScreen() {
       <ProfileStack.Screen
         name="ProfileSettings"
         component={ProfileSettings}
+        options={{
+          headerShown: true,
+          headerBackTitle: "Back",
+          headerShadowVisible: false,
+          headerTitle: "",
+        }}
+      />
+
+      <ProfileStack.Screen
+        name="ViewDiscountScreen"
+        component={ViewDiscountScreen}
         options={{
           headerShown: true,
           headerBackTitle: "Back",

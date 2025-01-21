@@ -25,16 +25,13 @@ const EventCard: React.FC<EventCardProps> = ({
   description,
   onPress,
 }) => {
-  const image = require("../assets/images/event-example.jpg");
   return (
     <View style={styles.card}>
-      {/* Image Background */}
       <ImageBackground
-        source={image}
+        source={{ uri: imageUrl }}
         style={styles.image}
         imageStyle={{ borderTopLeftRadius: 12, borderTopRightRadius: 12 }}
       ></ImageBackground>
-      {/* Conent Below */}
       <View style={styles.content}>
         <Text style={styles.date}>
           {date}, {location}
@@ -54,7 +51,7 @@ const styles = StyleSheet.create({
     margin: 16,
     borderRadius: 12,
     overflow: "hidden",
-    backgroundColor: "#fff",
+    backgroundColor: colors.white,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
@@ -64,7 +61,6 @@ const styles = StyleSheet.create({
   image: {
     height: 120,
     width: "100%",
-    backgroundColor: "#e0e0e0",
   },
   content: {
     backgroundColor: "rgba(255, 255, 255, 0.8)",
@@ -81,12 +77,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontFamily: "Lexend-Regular",
-    color: "#333",
+    color: colors.text,
     marginBottom: 4,
   },
   description: {
     fontSize: 14,
-    color: "#555",
+    color: colors.text,
     fontFamily: "Lexend-Regular",
     marginBottom: 8,
   },

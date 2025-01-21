@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, FlatList } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { firestoreDb } from "@/firebaseConfig"; 
+import { firestoreDb } from "@/firebaseConfig";
 import { collection, getDocs } from "firebase/firestore";
 import EventCard from "@/components/EventCard";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { createStaticNavigation } from "@react-navigation/native";
-import { useRouter } from "expo-router";
-import { Text } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import RootStackParamList from "@/app/types/Navigation";
+import LoadingScreen from "@/components/LoadingScreen";
 
 type EventsScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -34,22 +32,27 @@ export interface EventData {
 
 const EventsScreen: React.FC = () => {
   const [events, setEvents] = useState<EventData[]>([]);
-
-  const router = useRouter();
+  const [loading, setLoading] = useState(true);
   const navigation = useNavigation<EventsScreenNavigationProp>();
 
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const eventsCollection = collection(firestoreDb, "events"); // Pobieramy kolekcję `events`
+        setLoading(true);
+        const eventsCollection = collection(firestoreDb, "events");
         const eventsSnapshot = await getDocs(eventsCollection);
-        const eventsData = eventsSnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...(doc.data() as EventData),
-        }));
+        const eventsData = eventsSnapshot.docs.map((doc) => {
+          const data = doc.data() as EventData;
+          return {
+            ...data,
+            id: doc.id,
+          };
+        });
         setEvents(eventsData);
       } catch (error) {
         console.error("Error fetching events:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -60,11 +63,16 @@ const EventsScreen: React.FC = () => {
     navigation.navigate("ViewEventScreen", { event });
   };
 
+  if (loading) {
+    return <LoadingScreen />;
+  }
+
   return (
     <View style={styles.container}>
       <SafeAreaView>
         <FlatList
           data={events}
+          showsVerticalScrollIndicator={false}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <EventCard

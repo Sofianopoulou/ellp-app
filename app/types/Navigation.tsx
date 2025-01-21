@@ -11,7 +11,7 @@ type RootStackParamList = {
   ProfileSettings: undefined;
   SignIn: undefined;
   FavouriteDiscounts: undefined;
-  EventsScreen: undefined; // No parameters for this screen
+  EventsScreen: undefined;
   ViewEventScreen: { event: EventData };
   DiscountsScreen: undefined;
   ViewDiscountScreen: { discount: DiscountData };

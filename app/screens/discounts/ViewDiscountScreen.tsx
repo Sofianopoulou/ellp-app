@@ -1,35 +1,24 @@
-import RootStackParamList from "@/app/types/Navigation";
-import { RouteProp } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/native";
+import { useLayoutEffect } from "react";
 import {
   ImageBackground,
   Linking,
   Text,
   TouchableOpacity,
   View,
+  ScrollView,
+  StyleSheet,
 } from "react-native";
-import { ScrollView } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import { StyleSheet } from "react-native";
 import colors from "@/assets/colors/colors";
-import { useLayoutEffect } from "react";
+import RootStackParamList from "@/app/types/Navigation";
+import images from "@/utils/imageMapping";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-type ViewEventScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  "ViewEventscreen"
->;
-type ViewEventScreenRouteProp = RouteProp<
-  RootStackParamList,
-  "ViewEventScreen"
->;
-
-interface Props {
-  route: ViewEventScreenRouteProp;
-  navigation: ViewEventScreenNavigationProp;
-}
+type Props = NativeStackScreenProps<RootStackParamList, "ViewDiscountScreen">;
 
 const ViewDiscountScreen = ({ route, navigation }: Props) => {
   const { discount } = route.params;
+
   useLayoutEffect(() => {
     navigation.setOptions({
       title: "",
@@ -42,21 +31,29 @@ const ViewDiscountScreen = ({ route, navigation }: Props) => {
     );
   };
 
+  const resolvedImage = images[discount.imageUrl];
+
   return (
-    <ScrollView>
+    <ScrollView style={{ backgroundColor: colors.white }}>
       <View style={styles.container}>
-        {/* Logo of the collabolator */}
-        <ImageBackground style={styles.discountLogo} />
-        {/* title */}
+        {/* Logo of the collaborator */}
+        <ImageBackground
+          source={resolvedImage}
+          style={styles.discountLogo}
+          imageStyle={{ borderRadius: 30, resizeMode: "cover" }}
+        />
+
         <Text style={styles.title}>{discount.title}</Text>
-        {/* Category */}
         <View style={styles.categoryContainer}>
           <Text style={styles.category}>{discount.category}</Text>
         </View>
-        {/* Location */}
         <View style={styles.rowInfoContainer}>
           <View style={styles.iconContainer}>
-            <MaterialIcons name="location-on" size={28} color="#4B9CD3" />
+            <MaterialIcons
+              name="location-on"
+              size={28}
+              color={colors.secondary}
+            />
           </View>
           <View style={styles.infoColumnContainer}>
             <Text style={styles.infoTextMain}>{discount.locationCity}</Text>
@@ -65,11 +62,9 @@ const ViewDiscountScreen = ({ route, navigation }: Props) => {
             </Text>
           </View>
         </View>
-
-        {/* Discount */}
         <View style={styles.rowInfoContainer}>
           <View style={styles.iconContainer}>
-            <MaterialIcons name="percent" size={28} color="#4B9CD3" />
+            <MaterialIcons name="percent" size={28} color={colors.secondary} />
           </View>
           <View style={styles.infoColumnContainer}>
             <Text style={styles.infoTextMain}>{discount.discount}</Text>
@@ -78,12 +73,10 @@ const ViewDiscountScreen = ({ route, navigation }: Props) => {
         </View>
 
         {/* Map */}
-        <TouchableOpacity
-          onPress={handleOpenMaps}
-        >
+        <TouchableOpacity onPress={handleOpenMaps}>
           <View style={styles.rowInfoContainer}>
             <View style={styles.iconContainer}>
-              <MaterialIcons name="map" size={28} color="#4B9CD3" />
+              <MaterialIcons name="map" size={28} color={colors.secondary} />
             </View>
             <View style={styles.infoColumnContainer}>
               <Text style={styles.infoTextMain}>Check where it is!</Text>
@@ -94,12 +87,11 @@ const ViewDiscountScreen = ({ route, navigation }: Props) => {
 
         {/* Extra info */}
         <View style={styles.extraInfoContainer}>
-          <Text>Don't have a membership card yet?</Text>
-          <Text>
-            Sign up today and start enjoying these exclusive benefits at our
-            partner location!
+          <Text style={{ textAlign: "left", fontSize: 15 }}>
+            Don't have a membership card yet? Sign up today and start enjoying
+            these exclusive benefits at our partner location!
+            <Text style={styles.link}> Join us here!</Text>
           </Text>
-          <Text style={styles.link}>Join us here!</Text>
         </View>
       </View>
     </ScrollView>
@@ -114,51 +106,52 @@ const styles = StyleSheet.create({
     marginHorizontal: 32,
   },
   discountLogo: {
-    width: "60%",
-    backgroundColor: "pink",
-    height: 130,
+    width: "100%",
+    height: 180,
     borderRadius: 30,
     alignSelf: "center",
     marginTop: 32,
+    justifyContent: "center",
+    alignItems: "center",
+    overflow: "hidden",
   },
   title: {
     alignSelf: "center",
-    fontWeight: "500",
+    textAlign: "center",
+    fontFamily: "Lexend-SemiBold",
     fontSize: 26,
-    marginTop: 28,
+    marginTop: 15,
   },
-
   iconContainer: {
     padding: 12,
-    backgroundColor: "pink",
+    backgroundColor: colors.grey_background,
     borderRadius: "100%",
+    height: 50,
+    justifyContent: "center",
+    alignItems: "center",
   },
-
   rowInfoContainer: {
     flexDirection: "row",
     alignContent: "center",
     paddingHorizontal: 15,
-    paddingLeft: 22,
+    paddingLeft: 10,
     paddingVertical: 10,
     gap: 10,
   },
-
   infoColumnContainer: {
     alignContent: "center",
     justifyContent: "center",
     gap: 3,
+    marginRight: 20,
   },
-
   infoTextMain: {
     fontSize: 16,
-    fontWeight: 500,
+    fontFamily: "Lexend-Medium",
   },
-
   infoText: {
     fontSize: 16,
-    fontWeight: 300,
+    fontFamily: "Lexend-Light",
   },
-
   categoryContainer: {
     alignItems: "center",
     marginBottom: 15,
@@ -166,16 +159,16 @@ const styles = StyleSheet.create({
   category: {
     fontSize: 16,
     paddingTop: 4,
-    fontWeight: "500",
+    fontFamily: "Lexend-SemiBold",
     color: colors.primary,
   },
-
   extraInfoContainer: {
-    padding: 22,
+    marginTop: 10,
+    fontFamily: "Lexend-Regular",
+    marginBottom: 20,
   },
-
   link: {
     color: colors.primary,
-    fontWeight: "700",
+    fontFamily: "Lexend-SemiBold",
   },
 });

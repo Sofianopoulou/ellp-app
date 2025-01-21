@@ -1,8 +1,8 @@
 import React from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
-import { FontAwesome } from "@expo/vector-icons"; // For the heart and discount icon
+import { FontAwesome } from "@expo/vector-icons";
 import colors from "@/assets/colors/colors";
-import { DiscountData } from "@/app/screens/discounts/DiscountsScreen";
+import images from "@/utils/imageMapping";
 
 type DiscountFavouriteCardProps = {
   imageUrl: string;
@@ -20,12 +20,11 @@ const DiscountProfileCard: React.FC<DiscountFavouriteCardProps> = ({
   discount,
   onPress,
 }) => {
+  const resolvedImage = images[imageUrl];
+
   return (
     <View style={styles.card}>
-      <Image
-        source={{ uri: imageUrl }} 
-        style={styles.image}
-      />
+      <Image source={resolvedImage} style={styles.image} />
       <View style={styles.content}>
         <Text style={styles.location}>{location}</Text>
         <Text style={styles.title}>{title}</Text>
@@ -69,7 +68,6 @@ const styles = StyleSheet.create({
   image: {
     width: 120,
     height: "100%",
-
     borderRadius: 8,
   },
   content: {
@@ -77,14 +75,14 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
   },
   location: {
-    fontSize: 12,
+    fontSize: 10,
     color: colors.btm_nav_unselected,
     fontFamily: "Lexend-Regular",
   },
   title: {
     fontSize: 18,
     fontFamily: "Lexend-Regular",
-    color: "#333",
+    color: colors.text,
     marginVertical: 4,
   },
   discountRow: {
@@ -93,7 +91,7 @@ const styles = StyleSheet.create({
     marginVertical: 8,
   },
   icon: {
-    marginRight: 4,
+    paddingRight: 6,
   },
   discountText: {
     fontSize: 14,
@@ -116,6 +114,7 @@ const styles = StyleSheet.create({
   },
   heartIcon: {
     marginLeft: 8,
+    marginBottom: 80,
   },
 });
 
