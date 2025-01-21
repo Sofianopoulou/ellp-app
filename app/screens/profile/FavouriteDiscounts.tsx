@@ -1,15 +1,16 @@
-import { View, Dimensions, FlatList, StyleSheet } from "react-native";
+import { View, FlatList, StyleSheet } from "react-native";
 import colors from "@/assets/colors/colors";
 import { useNavigation } from "@react-navigation/native";
 import RootStackParamList from "@/app/types/Navigation";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import DiscountProfileCard from "@/components/DiscountProfileCard";
 import { DiscountData } from "../discounts/DiscountsScreen";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { get, ref } from "firebase/database";
 import { database, firestoreDb } from "@/firebaseConfig";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
+import Loading from "@/components/Loading";
 
 type FavouritesPageScreenProps = NativeStackNavigationProp<
   RootStackParamList,
@@ -94,21 +95,17 @@ const FavouriteDiscounts = () => {
     return () => unsubscribe();
   }, [favouriteUserDiscountsIds]);
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      title: "Your favourite discounts!",
-      headerBackButtonDisplayMode: "minimal",
-    });
-  }, [navigation]);
-
   const handlePress = (discount: DiscountData) => {
     navigation.navigate("ViewDiscountScreen", { discount });
   };
+
+  if (loading) return <Loading />;
 
   return (
     <View style={styles.container}>
       <FlatList
         data={favouriteUserDiscounts}
+        showsVerticalScrollIndicator={false}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <DiscountProfileCard

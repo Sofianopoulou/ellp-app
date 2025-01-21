@@ -5,11 +5,10 @@ import {
   ImageBackground,
   StyleSheet,
   TouchableOpacity,
-  ImageSourcePropType,
 } from "react-native";
-import { Image } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import colors from "@/assets/colors/colors";
+import images from "@/utils/imageMapping";
 
 type DiscountCardProps = {
   imageUrl: string;
@@ -31,24 +30,25 @@ const DiscountCard: React.FC<DiscountCardProps> = ({
   onToggleFavorite,
   isFavorite,
 }) => {
-  const image = require("../assets/images/event-example.jpg");
   const [favorite, setFavorite] = useState(isFavorite);
 
   const toggleFavorite = () => {
     const newFavoriteState = !favorite;
     setFavorite(newFavoriteState);
-    onToggleFavorite(newFavoriteState); // Inform parent about the state change
+    onToggleFavorite(newFavoriteState);
   };
 
   useEffect(() => {
     setFavorite(isFavorite);
   }, [isFavorite]);
 
+  const resolvedImage = images[imageUrl];
+
   return (
     <View style={styles.card}>
       {/* Image Background */}
       <ImageBackground
-        source={{ uri: imageUrl }}
+        source={resolvedImage}
         style={styles.image}
         imageStyle={{ borderTopLeftRadius: 12, borderTopRightRadius: 12 }}
       />
@@ -60,7 +60,7 @@ const DiscountCard: React.FC<DiscountCardProps> = ({
           <Text style={styles.location}>{location}</Text>
           <TouchableOpacity onPress={() => toggleFavorite()}>
             <FontAwesome
-              name={favorite ? "heart" : "heart-o"} 
+              name={favorite ? "heart" : "heart-o"}
               size={20}
               color={favorite ? "red" : "black"}
             />
@@ -137,6 +137,8 @@ const styles = StyleSheet.create({
   discountText: {
     fontSize: 14,
     color: colors.btm_nav_unselected,
+    marginRight: 12,
+    marginLeft: 4,
     fontFamily: "Lexend-Regular",
   },
   button: {
@@ -145,7 +147,7 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     paddingHorizontal: 14,
     borderRadius: 20,
-    marginTop: 10,
+    marginTop: 2,
   },
   buttonText: {
     color: colors.white,

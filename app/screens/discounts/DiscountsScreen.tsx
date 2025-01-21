@@ -15,8 +15,8 @@ import { firestoreDb } from "@/firebaseConfig";
 import { useNavigation } from "expo-router";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack/lib/typescript/commonjs/src/types";
 import RootStackParamList from "@/app/types/Navigation";
-import { Text } from "react-native";
 import LoadingScreen from "@/components/LoadingScreen";
+
 export interface DiscountData {
   id: string;
   imageUrl: string;
@@ -27,6 +27,7 @@ export interface DiscountData {
   category: string;
   locationPostalCode: string;
   locationStreet: string;
+  locationCity: string;
 }
 
 type DiscountsScreenNavigationProp = NativeStackNavigationProp<

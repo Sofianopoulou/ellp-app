@@ -1,6 +1,5 @@
 import RootStackParamList from "@/app/types/Navigation";
-import { RouteProp } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/native";
+import { StackScreenProps } from "@react-navigation/stack";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Linking } from "react-native";
 import colors from "@/assets/colors/colors";
@@ -14,20 +13,15 @@ import {
 } from "react-native";
 import { useLayoutEffect } from "react";
 
-type ViewEventScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  "ViewEventscreen"
->;
-type ViewEventScreenRouteProp = RouteProp<
+type ViewEventScreenProps = StackScreenProps<
   RootStackParamList,
   "ViewEventScreen"
 >;
 
-interface Props {
-  route: ViewEventScreenRouteProp;
-  navigation: ViewEventScreenNavigationProp;
-}
-export default function ViewEventScreen({ route, navigation }: Props) {
+export default function ViewEventScreen({
+  route,
+  navigation,
+}: ViewEventScreenProps) {
   const { event } = route.params;
 
   useLayoutEffect(() => {
@@ -50,13 +44,14 @@ export default function ViewEventScreen({ route, navigation }: Props) {
         source={{ uri: event.imageUrl }}
         style={styles.eventImage}
       />
-      {/* Event title */}
       <Text style={styles.title}>{event.title}</Text>
-      {/* Event description */}
       <Text style={styles.description}>{event.description}</Text>
-      {/* Event Date and Time */}
+
+      {/* Event Date */}
       <View style={styles.rowInfoContainer}>
-        <MaterialIcons name="event" size={28} color="#4B9CD3" />
+        <View style={styles.iconCircle}>
+          <MaterialIcons name="event" size={28} color={colors.secondary} />
+        </View>
         <View style={styles.infoColumnContainer}>
           <Text style={styles.infoTextMain}>{event.date}</Text>
           <Text style={styles.infoText}>
@@ -65,17 +60,22 @@ export default function ViewEventScreen({ route, navigation }: Props) {
           </Text>
         </View>
       </View>
+
       {/* Location */}
       <View style={styles.rowInfoContainer}>
-        <MaterialIcons name="place" size={28} color="#4B9CD3" />
+        <View style={styles.iconCircle}>
+          <MaterialIcons name="place" size={28} color={colors.secondary} />
+        </View>
         <View style={styles.infoColumnContainer}>
           <Text style={styles.infoTextMain}>{event.location}</Text>
-          {/* TODO location City + location address */}
         </View>
       </View>
+
       {/* Price */}
       <View style={styles.rowInfoContainer}>
-        <MaterialIcons name="euro" size={28} color="#4B9CD3" />
+        <View style={styles.iconCircle}>
+          <MaterialIcons name="euro" size={28} color={colors.secondary} />
+        </View>
         <View style={styles.infoColumnContainer}>
           <Text style={styles.infoTextMain}>{event.price} euros</Text>
           <Text style={styles.infoText}>
@@ -83,9 +83,12 @@ export default function ViewEventScreen({ route, navigation }: Props) {
           </Text>
         </View>
       </View>
-      {/* Info and link to webpage */}
+
+      {/* Webpage Info */}
       <View style={styles.rowInfoContainer}>
-        <MaterialIcons name="info" size={28} color="#4B9CD3" />
+        <View style={styles.iconCircle}>
+          <MaterialIcons name="info" size={28} color={colors.secondary} />
+        </View>
         <View style={styles.infoColumnContainer}>
           <Text style={styles.infoTextMain}>
             See the event to buy tickets on our webpage:
@@ -96,8 +99,6 @@ export default function ViewEventScreen({ route, navigation }: Props) {
           <Text style={styles.infoText}>See you there!</Text>
         </View>
       </View>
-
-      {/*  */}
     </ScrollView>
   );
 }
@@ -105,57 +106,56 @@ export default function ViewEventScreen({ route, navigation }: Props) {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    margin: 10,
-    paddingHorizontal: 38,
+    paddingHorizontal: 20,
+    backgroundColor: colors.white,
   },
   eventImage: {
     width: "100%",
     height: 180,
     marginBottom: 16,
+    marginTop: 10,
   },
   title: {
     fontSize: 26,
-    fontWeight: "400",
-    marginBottom: 14,
+    fontFamily: "Lexend-SemiBold",
+    marginBottom: 10,
+    textAlign: "center",
+    color: colors.text,
   },
   description: {
     fontSize: 16,
+    fontFamily: "Lexend-Light",
     marginBottom: 20,
+    textAlign: "center",
+    color: colors.text,
   },
-
   rowInfoContainer: {
     flexDirection: "row",
     margin: 6,
     alignItems: "center",
   },
-
+  iconCircle: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: colors.grey_background,
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 10,
+  },
   infoColumnContainer: {
     padding: 10,
   },
-
   infoText: {
     fontSize: 16,
-    fontWeight: 300,
+    fontFamily: "Lexend-ExtraLight",
   },
-
   infoTextMain: {
     fontSize: 16,
-    fontWeight: 500,
+    fontFamily: "Lexend-Regular",
   },
-
   linkText: {
     color: colors.primary,
-    fontWeight: "700",
-  },
-
-  closeButton: {
-    backgroundColor: "#4B9CD3",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 10,
-  },
-  closeButtonText: {
-    color: "white",
-    fontSize: 16,
+    fontFamily: "Lexend-SemiBold",
   },
 });

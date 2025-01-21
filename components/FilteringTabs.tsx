@@ -9,12 +9,13 @@ type FilteringTabsProps = {
 
 const categories = [
   { name: "All", color: colors.all_tab },
-  { name: "Food", color: colors.food_tab },
-  { name: "Entertainment", color: colors.enertainment_tab },
+  { name: "Restaurants & Nightlife", color: colors.food_tab },
+  { name: "Lifestyle", color: colors.enertainment_tab },
   { name: "Fitness", color: colors.fitness_tab },
-  { name: "Adventure", color: colors.adventure_tab },
+  { name: "Beauty", color: colors.adventure_tab },
   { name: "Accommodation", color: colors.accommodation_tab },
-  { name: "Travel", color: colors.travel_tab },
+  { name: "Transportation", color: colors.travel_tab },
+  { name: "Education", color: colors.primary },
 ];
 
 const FilteringTabs: React.FC<FilteringTabsProps> = ({
@@ -67,7 +68,7 @@ const styles = StyleSheet.create({
   selectedTab: {
     transform: [{ scale: 1.1 }],
     elevation: 4,
-    shadowColor: "#000",
+    shadowColor: colors.primary,
     shadowOffset: { width: 0, height: 2 }, // Shadow for iOS
     shadowOpacity: 0.85,
     shadowRadius: 3.84,

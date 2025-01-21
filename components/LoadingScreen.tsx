@@ -1,10 +1,11 @@
 import React from "react";
 import { View, Text, ActivityIndicator, StyleSheet } from "react-native";
+import colors from "@/assets/colors/colors";
 
 const LoadingScreen: React.FC = () => {
   return (
     <View style={styles.container}>
-      <ActivityIndicator size="large" color="#6200ea" />
+      <ActivityIndicator size="large" color={colors.primary} />
       <Text style={styles.text}>Loading...</Text>
     </View>
   );
@@ -20,8 +21,8 @@ const styles = StyleSheet.create({
   text: {
     marginTop: 20,
     fontSize: 18,
-    color: "#6200ea",
-    fontWeight: "bold",
+    color: colors.primary,
+    fontFamily: "Lexend-SemiBold",
   },
 });
 
