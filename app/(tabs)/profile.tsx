@@ -4,10 +4,6 @@ import Profile from "@/app/screens/profile/Profile";
 import PaymentScreen from "../screens/profile/PaymentScreen";
 import InfoPage from "../screens/profile/InfoPage";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { TouchableOpacity, Text } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import colors from "@/assets/colors/colors";
-
 import ProfileSettings from "../screens/profile/ProfileSettings";
 import FavouriteDiscounts from "../screens/profile/FavouriteDiscounts";
 import ViewDiscountScreen from "../screens/discounts/ViewDiscountScreen";
