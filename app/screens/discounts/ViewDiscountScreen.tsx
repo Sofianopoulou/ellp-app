@@ -90,7 +90,13 @@ const ViewDiscountScreen = ({ route, navigation }: Props) => {
           <Text style={{ textAlign: "left", fontSize: 15 }}>
             Don't have a membership card yet? Sign up today and start enjoying
             these exclusive benefits at our partner location!
-            <Text style={styles.link}> Join us here!</Text>
+            <Text
+              onPress={() => navigation.navigate("JoinUs")}
+              style={styles.link}
+            >
+              {" "}
+              Join us here!
+            </Text>
           </Text>
         </View>
       </View>
