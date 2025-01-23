@@ -37,7 +37,7 @@ To get started with the ELLP app, follow these steps:
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/ala0702/ELLP.git
+   git clone https://github.com/Sofianopoulou/ellp-app.git
    cd .\ELLP\
    ```
 
