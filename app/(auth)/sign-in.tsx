@@ -105,7 +105,7 @@ const SignIn = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 40,
+    backgroundColor: colors.white,
   },
   scrollView: {
     paddingBottom: 30,
@@ -116,6 +116,7 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
   },
   logo: {
+    marginTop: 40,
     width: 115,
     height: 115,
     alignSelf: "center",
